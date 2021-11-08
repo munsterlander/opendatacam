@@ -800,7 +800,11 @@ module.exports = {
 
     once(self.HTTPRequestListeningToYOLO, 'response').then(([res]) => {
       // re-emit request errors on response (so the pipeline fails, and we catch them)
-      self.HTTPRequestListeningToYOLO.on('error', (e) => res.emit('error', e));
+      self.HTTPRequestListeningToYOLO.on('error', (e) => {
+	      if(Opendatacam.isListeningToYOLO) Opendatacam.isListeningToYOLO = false;
+	      res.emit('error', e);
+      });
+
 
       Logger.log(`statusCode: ${res.statusCode}`);
       res.once('data', () => console.log('Got first JSON chunk'));
