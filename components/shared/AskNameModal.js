@@ -3,6 +3,7 @@ import SVG from 'react-inlinesvg';
 import CanvasEngine from '../canvas/CanvasEngine';
 import { CANVAS_RENDERING_MODE } from '../../utils/constants';
 import { EDITOR_MODE } from '../../statemanagement/app/CounterStateManagement';
+import { connect } from 'react-redux';
 
 class AskNameModal extends Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class AskNameModal extends Component {
 
     this.state = {
       name: props.name || '',
-      mode: props.mode || '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,7 +30,7 @@ class AskNameModal extends Component {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
     console.log('component mounted');
-    console.log('Props: '+this.state.mode);
+    console.log('Props: '+this.props.mode);
     console.log('Const: '+EDITOR_MODE.EDIT_LINE);
   }
 
@@ -55,7 +55,7 @@ class AskNameModal extends Component {
             className="appearance-none rounded-l py-2 px-3"
             value={this.state.name}
             onChange={this.handleChange}
-            placeholder={this.state.mode}
+            placeholder="Counter name"
             autoFocus
           />
           <input
@@ -74,7 +74,7 @@ class AskNameModal extends Component {
               aria-label="icon close"
             />
           </button>
-          {this.state.mode !== EDITOR_MODE.EDIT_LINE
+          {this.props.mode !== EDITOR_MODE.EDIT_LINE
           && (
             <button
               className="btn btn-default p-0 rounded-r"
@@ -118,4 +118,6 @@ class AskNameModal extends Component {
   }
 }
 
-export default AskNameModal;
+export default connect((state) => ({
+  mode: state.counter.get('mode'),
+}))(AskNameModal);
