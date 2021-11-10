@@ -438,7 +438,7 @@ class MongoDbManager extends DbManagerBase {
   async getRecordingAvgTime(recordingId) {
 		return new Promise((resolve, reject) => {
       this.getDB().then(db => {
-        db.collection(RECORDING_COLLECTION)
+        db.collection(this.RECORDING_COLLECTION)
 					.aggregate(
 							[
 								{
