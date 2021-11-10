@@ -29,7 +29,8 @@ class AskNameModal extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
-    console.log('Props: '+this.props.mode);
+    console.log('component mounted');
+    console.log('Props: '+this.state.mode);
     console.log('Const: '+EDITOR_MODE.EDIT_LINE);
   }
 
@@ -54,7 +55,7 @@ class AskNameModal extends Component {
             className="appearance-none rounded-l py-2 px-3"
             value={this.state.name}
             onChange={this.handleChange}
-            placeholder="Counter name"
+            placeholder={this.state.mode}
             autoFocus
           />
           <input
@@ -73,7 +74,7 @@ class AskNameModal extends Component {
               aria-label="icon close"
             />
           </button>
-          {this.props.mode !== EDITOR_MODE.EDIT_LINE
+          {this.state.mode !== EDITOR_MODE.EDIT_LINE
           && (
             <button
               className="btn btn-default p-0 rounded-r"
