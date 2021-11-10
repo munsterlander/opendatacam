@@ -120,4 +120,5 @@ class AskNameModal extends Component {
 
 export default connect((state) => ({
   mode: state.counter.get('mode'),
+  lastEditingMode: state.counter.get('lastEditingMode'),
 }))(AskNameModal);
