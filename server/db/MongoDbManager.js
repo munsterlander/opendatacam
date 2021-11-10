@@ -443,7 +443,7 @@ class MongoDbManager extends DbManagerBase {
 							[
 								{
 									'$match': {
-										'_id': ObjectID(recordingId)
+										'id': recordingId
 									}
 								}, {
 									'$unwind': {
@@ -510,6 +510,8 @@ class MongoDbManager extends DbManagerBase {
               }
             }
           });
+      }, (reason) => {
+        reject(reason);
       });
     });	
 	}

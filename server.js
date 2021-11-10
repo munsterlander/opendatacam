@@ -939,7 +939,7 @@ app.prepare()
    *     ]
   */
   express.get('/recording/:id/getAvgTime', (req, res) => {
-    DBManager.getRecordingAvgTime(req.params.id).then((responseData) => {
+    dbManager.getRecordingAvgTime(req.params.id).then((responseData) => {
       	res.json(responseData);
     });
   })
@@ -962,7 +962,7 @@ app.prepare()
   express.get('/getLiveAvgTime', (req, res) => {
     if(Opendatacam.isRecording()) {
 		const recordingId = Opendatacam.getCurrentRecordingId();
-		DBManager.getRecordingAvgTime(recordingId).then((responseData) => {
+		dbManager.getRecordingAvgTime(recordingId).then((responseData) => {
 		  res.json(responseData);
 		});
     } else {
