@@ -71,7 +71,7 @@ class AskNameModal extends Component {
               aria-label="icon close"
             />
           </button>
-          {this.props.mode === EDITOR_MODE.EDIT_LINE
+          {this.props.mode !== EDITOR_MODE.EDIT_LINE
           && (
             <button
               className="btn btn-default p-0 rounded-r"
