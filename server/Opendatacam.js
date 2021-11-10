@@ -17,10 +17,10 @@ const config = require('../config.json');
 
 const pipeline = promisify(stream.pipeline);
 
-// YOLO process max retries
-const HTTP_REQUEST_LISTEN_TO_YOLO_RETRY_DELAY_MS = 30;
-// Max wait time for YOLO to start is 3 min = 180s
-const HTTP_REQUEST_LISTEN_TO_YOLO_MAX_RETRIES = 180 * (1000 / HTTP_REQUEST_LISTEN_TO_YOLO_RETRY_DELAY_MS);
+// YOLO delay between retry attempts - default: 30 ms
+const HTTP_REQUEST_LISTEN_TO_YOLO_RETRY_DELAY_MS = config.NEURAL_NETWORK_PARAMS.retry_delay_ms;
+// YOLO max wait time to start - default: 3 min = 180s
+const HTTP_REQUEST_LISTEN_TO_YOLO_MAX_RETRIES = config.NEURAL_NETWORK_PARAMS.max_retries_seconds * (1000 / HTTP_REQUEST_LISTEN_TO_YOLO_RETRY_DELAY_MS);
 
 // How long should we keep a rolling buffer of the current counting
 // need to be capped otherwise can lead to a big memory leak after a few days
@@ -800,7 +800,14 @@ module.exports = {
 
     once(self.HTTPRequestListeningToYOLO, 'response').then(([res]) => {
       // re-emit request errors on response (so the pipeline fails, and we catch them)
-      self.HTTPRequestListeningToYOLO.on('error', (e) => res.emit('error', e));
+       self.HTTPRequestListeningToYOLO.on('error', (e) => {
+        // When using a file or YOLO is restarting, reset to false and force an update to the UI so an initializing screen is shown
+        if(Opendatacam.isListeningToYOLO) {     
+            Opendatacam.isListeningToYOLO = false;
+            this.sendUpdateToClients();
+        }
+        res.emit('error', e);
+      });
 
       Logger.log(`statusCode: ${res.statusCode}`);
       res.once('data', () => console.log('Got first JSON chunk'));
