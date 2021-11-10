@@ -839,7 +839,7 @@ module.exports = {
         Opendatacam.isListeningToYOLO
         || Opendatacam.HTTPRequestListeningToYOLOMaxRetries <= 0
       ) {
-        console.log('Too much retries, YOLO took more than 3 min to start, likely an error');
+        console.log('Too many retries, YOLO took more than 3 min to start, likely an error');
         return;
       }
 

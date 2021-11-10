@@ -37,8 +37,7 @@ class InitializingView extends Component {
         {this.props.requestedFileRecording
           && (
           <h2 className="text-white text-3xl font-bold">
-            Restarting to process video file
-            {this.props.fileName.split('/').pop()}
+            Restarting to process video file {this.props.fileName.split('/').pop()}
           </h2>
           )}
         {this.props.droppedFile
