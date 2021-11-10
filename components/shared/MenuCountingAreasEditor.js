@@ -73,28 +73,6 @@ class MenuCountingAreasEditor extends Component {
               />
             </button>
             <button
-              className={`btn btn-default p-0 shadow rounded-r`}
-              onClick=""
-            >
-              <SVG
-                className="w-10 h-10 svg-icon flex items-center"
-                cacheRequests
-                src="/static/icons/ui/stopwatch.svg"
-                aria-label="icon stopwatch"
-              />
-            </button>
-            <button
-              className={`btn btn-default p-0 shadow rounded-r`}
-              onClick=""
-            >
-              <SVG
-                className="w-10 h-10 svg-icon flex items-center"
-                cacheRequests
-                src="/static/icons/ui/runner.svg"
-                aria-label="icon runner"
-              />
-            </button>
-            <button
               className={`btn btn-default p-0 shadow rounded-r ${this.props.mode === EDITOR_MODE.EDIT_POLYGON ? 'btn-default--active' : ''}`}
               onClick={() => this.props.dispatch(setMode(EDITOR_MODE.EDIT_POLYGON))}
             >
@@ -103,17 +81,6 @@ class MenuCountingAreasEditor extends Component {
                 cacheRequests
                 src="/static/icons/ui/addpolygon.svg"
                 aria-label="icon addpolygon"
-              />
-            </button>
-            <button
-              className={`btn btn-default p-0 shadow rounded-r`}
-              onClick=""
-            >
-              <SVG
-                className="w-10 h-10 svg-icon flex items-center"
-                cacheRequests
-                src="/static/icons/ui/gps.svg"
-                aria-label="icon gps"
               />
             </button>
             <a
