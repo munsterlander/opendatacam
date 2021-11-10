@@ -29,9 +29,6 @@ class AskNameModal extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
-    console.log('component mounted');
-    console.log('Props: '+this.props.lastEditingMode);
-    console.log('Const: '+EDITOR_MODE.EDIT_LINE);
   }
 
   componentWillUnmount() {
@@ -74,7 +71,7 @@ class AskNameModal extends Component {
               aria-label="icon close"
             />
           </button>
-          {this.props.mode !== EDITOR_MODE.EDIT_LINE
+          {this.props.lastEditingMode === EDITOR_MODE.EDIT_LINE
           && (
             <button
               className="btn btn-default p-0 rounded-r"
@@ -119,6 +116,5 @@ class AskNameModal extends Component {
 }
 
 export default connect((state) => ({
-  mode: state.counter.get('mode'),
   lastEditingMode: state.counter.get('lastEditingMode'),
 }))(AskNameModal);
