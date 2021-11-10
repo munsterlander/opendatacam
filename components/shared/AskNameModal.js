@@ -29,6 +29,8 @@ class AskNameModal extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
+    console.log('Props: '+this.props.mode);
+    console.log('Const: '+EDITOR_MODE.EDIT_LINE);
   }
 
   componentWillUnmount() {
@@ -75,7 +77,7 @@ class AskNameModal extends Component {
           && (
             <button
               className="btn btn-default p-0 rounded-r"
-              onClick={`console.log('${this.props.mode}')`}
+              onClick=""
             >
               <SVG
                 className="w-10 h-10 svg-icon flex items-center"
