@@ -63,9 +63,11 @@ const initialState = {
     recordingId: null,
     dateStarted: null,
     filename: '',
+    avg_time: 0,
   },
   uiSettings: {
     counterEnabled: true,
+    waitTimeEnabled: false,
     pathfinderEnabled: true,
     heatmapEnabled: false,
   },
@@ -353,6 +355,14 @@ module.exports = {
         // console.log('do not persist yet for file, wait for frameId 25')
         // console.log(frameId);
       } else {
+        //Adding hook for avg wait time
+        if(Opendatacam.uiSettings.waitTimeEnabled){
+          Opendatacam.database.getRecordingAvgTime(Opendatacam.recordingStatus.recordingId).then((responseData) => {
+            if(Object.keys(responseData).length){
+              Opendatacam.recordingStatus.avg_time = responseData.avg_milliseconds;
+            }
+          });
+        }
         // and send bad JSON objects
         this.persistNewRecordingFrame(
           frameId,

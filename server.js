@@ -924,6 +924,54 @@ app.prepare()
     });
 
     /**
+   * @api {get} /recording/:id/getAvgTime return average time
+   * @apiName getAvgTime
+   * @apiGroup Recording
+   *
+   * @apiDescription If a recording had two counters, return the average time (milliseconds) objects took to transit the gap
+   *
+   * @apiSuccessExample {json} Success Response:
+   *     [
+   *       {
+   *         "_id": null,
+   *         "avg_milliseconds": "6288"
+   *	   }
+   *     ]
+  */
+  express.get('/recording/:id/getAvgTime', (req, res) => {
+    DBManager.getRecordingAvgTime(req.params.id).then((responseData) => {
+      	res.json(responseData);
+    });
+  })
+
+  /**
+   * @api {get} /recording/getLiveAvgTime return live average time
+   * @apiName getLiveAvgTime
+   * @apiGroup Recording
+   *
+   * @apiDescription Return the current live average time (milliseconds) objects took to transit the gap
+   *
+   * @apiSuccessExample {json} Success Response:
+   *     [
+   *       {
+   *         "_id": null,
+   *         "avg_milliseconds": "6288"
+   *	   }
+   *     ]
+  */
+  express.get('/getLiveAvgTime', (req, res) => {
+    if(Opendatacam.isRecording()) {
+		const recordingId = Opendatacam.getCurrentRecordingId();
+		DBManager.getRecordingAvgTime(recordingId).then((responseData) => {
+		  res.json(responseData);
+		});
+    } else {
+		res.sendStatus(404);
+	}
+  })
+
+
+    /**
      * @api {get} /status Status
      * @apiName Status
      * @apiGroup Helper

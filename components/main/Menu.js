@@ -65,6 +65,12 @@ class Menu extends Component {
               onChange={(value) => this.props.dispatch(setUiSetting('counterEnabled', value))}
             />
             <Toggle
+              label="Show Wait Time"
+              description="Shows wait time display"
+              enabled={this.props.uiSettings.get('waitTimeEnabled')}
+              onChange={(value) => this.props.dispatch(setUiSetting('waitTimeEnabled', value))}
+            />
+            <Toggle
               label="Pathfinder"
               description="Display paths and positions"
               enabled={this.props.uiSettings.get('pathfinderEnabled')}

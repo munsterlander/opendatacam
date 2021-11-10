@@ -434,6 +434,87 @@ class MongoDbManager extends DbManagerBase {
       });
     });
   }
+
+  async getRecordingAvgTime(recordingId) {
+		return new Promise((resolve, reject) => {
+      this.getDB().then(db => {
+        db.collection(RECORDING_COLLECTION)
+					.aggregate(
+							[
+								{
+									'$match': {
+										'_id': ObjectID(recordingId)
+									}
+								}, {
+									'$unwind': {
+										'path': '$counterHistory'
+									}
+								}, {
+									'$group': {
+										'_id': '$counterHistory.id', 
+										'maxDate': {
+											'$max': '$counterHistory.timestamp'
+										}, 
+										'minDate': {
+											'$min': '$counterHistory.timestamp'
+										}
+									}
+								}, {
+									'$project': {
+										'_id': 1, 
+										'minDate': 1, 
+										'maxDate': 1, 
+										'datesNoMatch': {
+											'$ne': [
+												'$maxDate', '$minDate'
+											]
+										}
+									}
+								}, {
+									'$match': {
+										'datesNoMatch': true
+									}
+								}, {
+									'$group': {
+										'_id': null, 
+										'avg_milliseconds': {
+											'$avg': {
+												'$subtract': [
+													{
+														'$ifNull': [
+														  '$maxDate', 0
+														]
+													}, {
+														'$ifNull': [
+														  '$minDate', 0
+														]
+													}
+												]
+											}
+										}
+									}
+								}, {
+									'$project': {
+										'avg_milliseconds': 1
+									}
+								}
+							])
+ 					.toArray(function (err, docs) {
+            if (err) {
+              reject(err);
+            } else {
+              if (docs.length === 0) {
+                resolve({});
+              } else {
+                resolve(docs[0]);
+              }
+            }
+          });
+      });
+    });	
+	}
+
+
 }
 
 module.exports = { MongoDbManager };

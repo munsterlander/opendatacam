@@ -19,6 +19,7 @@ const initialState = fromJS({
     recordingId: null,
     dateStarted: null,
     filename: '',
+    avg_time: 0,
   },
   yoloStatus: {
     isStarted: false,
@@ -26,6 +27,7 @@ const initialState = fromJS({
   },
   uiSettings: {
     counterEnabled: true,
+    waitTimeEnabled: false,
     pathfinderEnabled: true,
     heatmapEnabled: false,
   },

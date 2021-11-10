@@ -22,6 +22,7 @@ class UIControls extends Component {
       const diff = Math.abs(new Date(this.props.recordingStatus.dateStarted) - new Date());
       var seconds = Math.floor(diff / 1000) % 60;
       var minutes = Math.floor((diff / 1000) / 60);
+      var avg_time = new Date(this.props.recordingStatus.avg_time).toISOString().slice(11,-1);
     }
 
     return (
@@ -43,6 +44,9 @@ class UIControls extends Component {
               {' '}
               FPS
             </div>
+            {this.props.recordingStatus.isRecording && this.props.uiSettings.get('waitTimeEnabled') && 
+            	<div className="fps avg_time">{avg_time.toString()} Wait Time</div>
+			      }
           </div>
           <div className="flex">
 
@@ -131,6 +135,11 @@ class UIControls extends Component {
             color: #FF0000;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
             top: 1rem;
+          }
+
+          .avg_time{
+            color: yellow;
+            font-weight: bold;
           }
         `}
         </style>
