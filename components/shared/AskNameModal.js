@@ -30,7 +30,7 @@ class AskNameModal extends Component {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
     console.log('component mounted');
-    console.log('Props: '+this.props.mode);
+    console.log('Props: '+this.props.lastEditingMode);
     console.log('Const: '+EDITOR_MODE.EDIT_LINE);
   }
 
