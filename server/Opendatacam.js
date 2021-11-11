@@ -168,6 +168,7 @@ module.exports = {
   },
 
   countItem(trackedItem, countingAreaKey, frameId, countingDirection, angleWithCountingLine) {
+    console.log('************* Tracked Item Name: '+trackedItem.name);
     if (Opendatacam.recordingStatus.isRecording) {
       var countedItem = {
         frameId,
