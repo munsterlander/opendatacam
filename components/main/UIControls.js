@@ -26,6 +26,7 @@ class UIControls extends Component {
     }
 
     if (this.props.uiSettings.get('droneEnabled') || this.props.alarmEnabled){
+      console.log('********************************** ALARM: '+JSON.stringify(this.props.alarmEnabled));
       let beep = require('browser-beep')({ frequency: 440, interval: 250  })
       beep(3);
       this.props.dispatch(setUiSetting('droneEnabled', false));

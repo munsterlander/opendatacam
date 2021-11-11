@@ -634,6 +634,7 @@ module.exports = {
         break;
       case 'Launch Drone':
         Opendatacam.alarmEnabled = true;
+        console.log('********************************** ALARM IS: '+Opendatacam.alarmEnabled);
             this.sendUpdateToClients();
         let pythonBridge = require('python-bridge');
         let python = pythonBridge();

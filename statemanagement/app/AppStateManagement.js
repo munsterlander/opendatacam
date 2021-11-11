@@ -250,7 +250,7 @@ export default function AppReducer(state = initialState, action = {}) {
     case UPDATE_APPSTATE:
       return state.set('yoloStatus', fromJS(action.payload.yoloStatus))
         .set('isListeningToYOLO', action.payload.isListeningToYOLO)
-        .set('alarmEnabled', action.payload.alarmEnabled)
+        .set('alarmEnabled', fromJS(action.payload.alarmEnabled))
         .set('recordingStatus', fromJS(action.payload.recordingStatus));
     default:
       return state;
