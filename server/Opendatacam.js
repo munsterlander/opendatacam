@@ -592,7 +592,7 @@ module.exports = {
                     if (countingAreaType === COUNTING_AREA_TYPE.BIDIRECTIONAL || countingAreaType === COUNTING_AREA_TYPE.LEFTRIGHT_TOPBOTTOM) {
                       const countedItem = this.countItem(trackedItem, countingAreaKey, frameId, COUNTING_DIRECTION.LEFTRIGHT_TOPBOTTOM, intersection.angle);
                       countedItemsForThisFrame.push(countedItem);
-                      checkCountingAreaForAction(countingAreaName);
+                      this.checkCountingAreaForAction(countingAreaName);
                     } else {
                       // do not count, comes from the wrong direction
                       // console.log('not counting, from bottom to top, or right to left of the counting lines')
@@ -602,7 +602,7 @@ module.exports = {
                     if (countingAreaType === COUNTING_AREA_TYPE.BIDIRECTIONAL || countingAreaType === COUNTING_AREA_TYPE.RIGHTLEFT_BOTTOMTOP) {
                       const countedItem = this.countItem(trackedItem, countingAreaKey, frameId, COUNTING_DIRECTION.RIGHTLEFT_BOTTOMTOP, intersection.angle);
                       countedItemsForThisFrame.push(countedItem);
-                      checkCountingAreaForAction(countingAreaName);
+                      this.checkCountingAreaForAction(countingAreaName);
                     } else {
                       // do not count, comes from the wrong direction
                       // console.log('not counting, comes from top to bottom or left to right of the counting line ')
