@@ -627,12 +627,10 @@ module.exports = {
   },
 
   checkCountingAreaForAction(countingAreaName){
-    console.log('************** NAME IS: '+countingAreaName);
     switch(countingAreaName){
       case 'Wait Time':
         break;
       case 'Launch Drone':
-        console.log('************************ LAUNCH THE DRONE **********************');
         let pythonBridge = require('python-bridge');
         let python = pythonBridge();
         python.ex`import math`;
