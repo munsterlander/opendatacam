@@ -24,7 +24,7 @@ class AskNameModal extends Component {
 
   nameChange(event,value){
     this.setState({ name: value });
-    console.log(this.state.name);
+    console.log('nameChange: '+ value + ' ' + this.state.name);
   }
 
   escFunction(event) {
