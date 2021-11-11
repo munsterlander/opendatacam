@@ -26,6 +26,9 @@ class AskNameModal extends Component {
     this.state.name = value;
     this.state.disabled = true;
     e.preventDefault();
+    if(value === 'GPS Quadrilateral'){
+      
+    }
   };
 
 
@@ -96,9 +99,9 @@ class AskNameModal extends Component {
                 />
               </button>
               <button
-                title="Port Runner - Launch the Drone"
+                title="Launch the Drone"
                 className="btn btn-default p-0 rounded-r"
-                onClick=""
+                onClick={this.handleClick('Launch Drone')}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
@@ -115,7 +118,7 @@ class AskNameModal extends Component {
               <button
                 title="Identify GPS for Drone"
                 className="btn btn-default p-0 rounded-r"
-                onClick=""
+                onClick={this.handleClick('GPS Quadrilateral')}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
