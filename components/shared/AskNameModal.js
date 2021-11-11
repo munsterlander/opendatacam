@@ -21,8 +21,9 @@ class AskNameModal extends Component {
     this.setState({ name: event.target.value });
   }
 
-  handleClick = value => () => {
+  handleClick = value => (e) => {
     this.state.name = value;
+    e.preventDefault();
   };
 
 
