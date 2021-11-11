@@ -670,6 +670,7 @@ module.exports = {
         yoloStatus: Opendatacam.yolo ? Opendatacam.yolo.getStatus() : null,
         isListeningToYOLO: Opendatacam.isListeningToYOLO,
         recordingStatus: Opendatacam.recordingStatus,
+        alarmEnabled: Opendatacam.alarmEnabled,
       },
     })}\n\n`;
     Opendatacam.sseResponses.forEach((res) => res.sse(data));
