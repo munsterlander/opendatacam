@@ -21,6 +21,12 @@ class AskNameModal extends Component {
     this.setState({ name: event.target.value });
   }
 
+  onClick = () => {
+    this.setState({
+      name: 'Wait Time'
+    })
+  }
+
 
   escFunction(event) {
     if (event.keyCode === 27) {
@@ -80,7 +86,7 @@ class AskNameModal extends Component {
                 value="Wait Time"
                 title="Calculate Wait Time"
                 className="btn btn-default p-0"
-                onClick={this.handleChange}
+                onClick={this.onClick}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
