@@ -65,12 +65,6 @@ class Menu extends Component {
               onChange={(value) => this.props.dispatch(setUiSetting('counterEnabled', value))}
             />
             <Toggle
-              label="Show Wait Time"
-              description="Shows wait time display"
-              enabled={this.props.uiSettings.get('waitTimeEnabled')}
-              onChange={(value) => this.props.dispatch(setUiSetting('waitTimeEnabled', value))}
-            />
-            <Toggle
               label="Pathfinder"
               description="Display paths and positions"
               enabled={this.props.uiSettings.get('pathfinderEnabled')}
@@ -81,6 +75,19 @@ class Menu extends Component {
               description="Display tracker accuracy"
               enabled={this.props.uiSettings.get('heatmapEnabled')}
               onChange={(value) => this.props.dispatch(setUiSetting('heatmapEnabled', value))}
+            />
+            <div className="mt-16" />
+            <Toggle
+              label="Show Wait Time"
+              description="Shows wait time display"
+              enabled={this.props.uiSettings.get('waitTimeEnabled')}
+              onChange={(value) => this.props.dispatch(setUiSetting('waitTimeEnabled', value))}
+            />
+            <Toggle
+              label="Enable Drone"
+              description="Turns on the Python bridge to launch the drone"
+              enabled={this.props.uiSettings.get('droneEnabled')}
+              onChange={(value) => this.props.dispatch(setUiSetting('droneEnabled', value))}
             />
             <div className="mt-16" />
             <Toggle

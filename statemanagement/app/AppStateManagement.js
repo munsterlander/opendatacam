@@ -28,6 +28,7 @@ const initialState = fromJS({
   uiSettings: {
     counterEnabled: true,
     waitTimeEnabled: false,
+    droneEnabled: false,
     pathfinderEnabled: true,
     heatmapEnabled: false,
   },

@@ -68,6 +68,7 @@ const initialState = {
   uiSettings: {
     counterEnabled: true,
     waitTimeEnabled: false,
+    droneEnabled: false,
     pathfinderEnabled: true,
     heatmapEnabled: false,
   },
@@ -168,7 +169,6 @@ module.exports = {
   },
 
   countItem(trackedItem, countingAreaKey, frameId, countingDirection, angleWithCountingLine) {
-    console.log('************* Tracked Item Name: '+trackedItem.name);
     if (Opendatacam.recordingStatus.isRecording) {
       var countedItem = {
         frameId,
@@ -593,7 +593,7 @@ module.exports = {
                     if (countingAreaType === COUNTING_AREA_TYPE.BIDIRECTIONAL || countingAreaType === COUNTING_AREA_TYPE.LEFTRIGHT_TOPBOTTOM) {
                       const countedItem = this.countItem(trackedItem, countingAreaKey, frameId, COUNTING_DIRECTION.LEFTRIGHT_TOPBOTTOM, intersection.angle);
                       countedItemsForThisFrame.push(countedItem);
-                      this.checkCountingAreaForAction(countingAreaName);
+                      this.checkCountingAreaForAction(countingAreaName, trackedItem);
                     } else {
                       // do not count, comes from the wrong direction
                       // console.log('not counting, from bottom to top, or right to left of the counting lines')
@@ -627,7 +627,7 @@ module.exports = {
     };
   },
 
-  checkCountingAreaForAction(countingAreaName){
+  checkCountingAreaForAction(countingAreaName,trackedItem){
     switch(countingAreaName){
       case 'Wait Time':
         break;
