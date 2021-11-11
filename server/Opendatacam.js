@@ -627,7 +627,18 @@ module.exports = {
   },
 
   checkCountingAreaForAction(countingAreaName){
-    console.log('Name of counter that was tripped: '+countingAreaName);
+    switch(countingAreaName){
+      case 'Wait Time':
+        var beep = require('browser-beep')({ frequency: 830, interval: 50 });
+        beep(2);
+        break;
+      case 'Launch Drone':
+        break;
+      case 'GPS Quadrilateral':
+        break;
+      default:
+        return;
+    }
   },
 
   sendUpdateToClients() {
