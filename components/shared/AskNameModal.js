@@ -18,11 +18,8 @@ class AskNameModal extends Component {
   }
 
   handleChange(event) {
+    console.log('state changed');
     this.setState({ name: event.target.value });
-  }
-
-  updateName(value) {
-    this.setState({ name: value });
   }
 
   escFunction(event) {
@@ -52,6 +49,7 @@ class AskNameModal extends Component {
           }}
         >
           <input
+            id="txtBox"
             type="text"
             className="appearance-none rounded-l py-2 px-3"
             value={this.state.name}
@@ -81,7 +79,7 @@ class AskNameModal extends Component {
               <button
                 title="Calculate Wait Time"
                 className="btn btn-default p-0"
-                onClick={this.updateName('Wait Time')}
+                onClick="document.getElementById('txtBox').value='Wait Time';"
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
