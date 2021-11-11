@@ -224,7 +224,7 @@ export function startListeningToServerData() {
       if (message.videoResolution) {
         dispatch(setOriginalResolution(message.videoResolution));
       }
-      if (getState().app.get('uiSettings').alarmEnabled) {
+      if (message.uiSettings.alarmEnabled) {
         dispatch(updateUiSetting('soundAlarm', message.uiSettings.soundAlarm));
       }
       dispatch(updateTrackerData(message.trackerDataForLastFrame));
