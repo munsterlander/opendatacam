@@ -219,6 +219,9 @@ export function startListeningToServerData() {
       if (message.videoResolution) {
         dispatch(setOriginalResolution(message.videoResolution));
       }
+      if (message.uiSettings) {
+        dispatch(setUiSetting('droneEnabled', message.uiSettings.droneEnabled));
+      }
       dispatch(updateTrackerData(message.trackerDataForLastFrame));
       dispatch(updateAppState(message.appState));
       dispatch(updateCounterSummary(message.counterSummary));
