@@ -671,6 +671,7 @@ module.exports = {
         recordingStatus: Opendatacam.recordingStatus,
       },
     })}\n\n`;
+    console.log(JSON.stringify(Opendatacam.uiSettings));
     Opendatacam.sseResponses.forEach((res) => res.sse(data));
   },
 
