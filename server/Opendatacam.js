@@ -72,6 +72,7 @@ const initialState = {
     pathfinderEnabled: true,
     heatmapEnabled: false,
   },
+  alarmEnabled: false,
   isListeningToYOLO: false,
   HTTPRequestListeningToYOLO: null,
   HTTPRequestListeningToYOLOMaxRetries: HTTP_REQUEST_LISTEN_TO_YOLO_MAX_RETRIES,
@@ -632,8 +633,8 @@ module.exports = {
       case 'Wait Time':
         break;
       case 'Launch Drone':
-        Opendatacam.uiSettings.droneEnabled = true;
-        this.sendUpdateToClients();
+        Opendatacam.alarmEnabled = true;
+            this.sendUpdateToClients();
         let pythonBridge = require('python-bridge');
         let python = pythonBridge();
         python.ex`import math`;
@@ -897,7 +898,6 @@ module.exports = {
 
   setUISettings(settings) {
     console.log('Save UI settings');
-    console.log(JSON.stringify(settings));
     Opendatacam.uiSettings = settings;
   },
 

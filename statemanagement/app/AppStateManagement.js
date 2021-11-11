@@ -32,6 +32,7 @@ const initialState = fromJS({
     pathfinderEnabled: true,
     heatmapEnabled: false,
   },
+  alarmEnabled: false,
   isListeningToYOLO: false,
   mode: MODE.LIVEVIEW,
   showMenu: false,
@@ -218,10 +219,6 @@ export function startListeningToServerData() {
       const message = JSON.parse(msg.data);
       if (message.videoResolution) {
         dispatch(setOriginalResolution(message.videoResolution));
-      }
-      if (message.uiSettings) {
-        console.log('************* VALUE IS: '+message.uiSettings.droneEnabled);
-        dispatch(setUiSetting('droneEnabled', message.uiSettings.droneEnabled));
       }
       dispatch(updateTrackerData(message.trackerDataForLastFrame));
       dispatch(updateAppState(message.appState));

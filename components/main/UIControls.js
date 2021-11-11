@@ -25,7 +25,7 @@ class UIControls extends Component {
       var avg_time = new Date(this.props.recordingStatus.avg_time).toISOString().slice(11,-1);
     }
 
-    if (this.props.uiSettings.get('droneEnabled')){
+    if (this.props.uiSettings.get('droneEnabled') || this.props.alarmEnabled){
       let beep = require('browser-beep')({ frequency: 440, interval: 250  })
       beep(3);
       this.props.dispatch(setUiSetting('droneEnabled', false));
