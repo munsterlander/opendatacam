@@ -4,7 +4,7 @@ import SVG from 'react-inlinesvg';
 
 import { MODE } from '../../utils/constants';
 import {
-  setMode, startRecording, stopRecording, showMenu,
+  setMode, startRecording, stopRecording, showMenu,setUiSetting,
 } from '../../statemanagement/app/AppStateManagement';
 import BtnRecording from '../shared/BtnRecording';
 
