@@ -631,6 +631,7 @@ module.exports = {
       case 'Wait Time':
         break;
       case 'Launch Drone':
+        console.log('************************ LAUNCH THE DRONE **********************');
         let pythonBridge = require('python-bridge');
         python.ex`import math`;
         python`math.sqrt(9)`.then(x => console.log('******** Python says: '+x));
