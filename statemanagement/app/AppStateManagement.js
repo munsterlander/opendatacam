@@ -220,6 +220,7 @@ export function startListeningToServerData() {
         dispatch(setOriginalResolution(message.videoResolution));
       }
       if (message.uiSettings) {
+        console.log('************* VALUE IS: '+message.uiSettings.droneEnabled);
         dispatch(setUiSetting('droneEnabled', message.uiSettings.droneEnabled));
       }
       dispatch(updateTrackerData(message.trackerDataForLastFrame));
