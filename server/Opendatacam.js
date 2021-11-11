@@ -71,8 +71,7 @@ const initialState = {
     droneEnabled: false,
     pathfinderEnabled: true,
     heatmapEnabled: false,
-  },
-  alarmEnabled: false,
+  },  
   isListeningToYOLO: false,
   HTTPRequestListeningToYOLO: null,
   HTTPRequestListeningToYOLOMaxRetries: HTTP_REQUEST_LISTEN_TO_YOLO_MAX_RETRIES,
@@ -633,9 +632,7 @@ module.exports = {
       case 'Wait Time':
         break;
       case 'Launch Drone':
-        Opendatacam.alarmEnabled = true;
-        console.log('********************************** ALARM IS: '+Opendatacam.alarmEnabled);
-            this.sendUpdateToClients();
+        Opendatacam.uiSettings.droneEnabled = true;
         let pythonBridge = require('python-bridge');
         let python = pythonBridge();
         python.ex`import math`;
@@ -671,7 +668,6 @@ module.exports = {
         yoloStatus: Opendatacam.yolo ? Opendatacam.yolo.getStatus() : null,
         isListeningToYOLO: Opendatacam.isListeningToYOLO,
         recordingStatus: Opendatacam.recordingStatus,
-        alarmEnabled: Opendatacam.alarmEnabled,
       },
     })}\n\n`;
     Opendatacam.sseResponses.forEach((res) => res.sse(data));

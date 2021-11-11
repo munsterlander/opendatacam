@@ -8,6 +8,9 @@ import {
 } from './CounterStateManagement';
 import { fetchHistory } from './HistoryStateManagement';
 import { setOriginalResolution } from './ViewportStateManagement';
+import {
+ setUiSetting,
+} from '../statemanagement/app/AppStateManagement';
 
 // Initial state
 const initialState = fromJS({
@@ -32,7 +35,6 @@ const initialState = fromJS({
     pathfinderEnabled: true,
     heatmapEnabled: false,
   },
-  alarmEnabled: false,
   isListeningToYOLO: false,
   mode: MODE.LIVEVIEW,
   showMenu: false,
@@ -220,6 +222,10 @@ export function startListeningToServerData() {
       if (message.videoResolution) {
         dispatch(setOriginalResolution(message.videoResolution));
       }
+      if (message.uiSettings.droneEnabled) {
+        console.log('********************************* DISPATCH THE DDRONE *******************************');
+        dispatch(setUiSetting('droneEnabled', false));
+      }
       dispatch(updateTrackerData(message.trackerDataForLastFrame));
       dispatch(updateAppState(message.appState));
       dispatch(updateCounterSummary(message.counterSummary));
@@ -250,7 +256,6 @@ export default function AppReducer(state = initialState, action = {}) {
     case UPDATE_APPSTATE:
       return state.set('yoloStatus', fromJS(action.payload.yoloStatus))
         .set('isListeningToYOLO', action.payload.isListeningToYOLO)
-        .set('alarmEnabled', fromJS(action.payload.alarmEnabled))
         .set('recordingStatus', fromJS(action.payload.recordingStatus));
     default:
       return state;
