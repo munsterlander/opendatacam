@@ -68,6 +68,8 @@ const initialState = {
   uiSettings: {
     counterEnabled: true,
     waitTimeEnabled: false,
+    alarmEnabled: false,
+    soundAlarm: false,
     droneEnabled: false,
     pathfinderEnabled: true,
     heatmapEnabled: false,
@@ -631,13 +633,17 @@ module.exports = {
     switch(countingAreaName){
       case 'Wait Time':
         break;
+      case 'Alarm':
+        if(Opendatacam.uiSettings.alarmEnabled) Opendatacam.uiSettings.soundAlarm = true;
+        break;
       case 'Launch Drone':
-        Opendatacam.uiSettings.droneEnabled = true;
-        let pythonBridge = require('python-bridge');
-        let python = pythonBridge();
-        python.ex`import math`;
-        python`math.sqrt(9)`.then(x => console.log('******** Python says: '+x));
-        python.end();
+        if(Opendatacam.uiSettings.droneEnabled){
+          let pythonBridge = require('python-bridge');
+          let python = pythonBridge();
+          python.ex`import math`;
+          python`math.sqrt(9)`.then(x => console.log('******** Python says: '+x));
+          python.end();
+        }
         break;
       case 'GPS Quadrilateral':
         break;

@@ -99,6 +99,18 @@ class AskNameModal extends Component {
                 />
               </button>
               <button
+                title="Set Alarm"
+                className="btn btn-default p-0"
+                onClick={this.handleClick('Alarm')}
+              >
+                <SVG
+                  className="w-10 h-10 svg-icon flex items-center"
+                  cacheRequests
+                  src="/static/icons/ui/bell.svg"
+                  aria-label="icon bell"
+                />
+              </button>
+              <button
                 title="Launch the Drone"
                 className="btn btn-default p-0 rounded-r"
                 onClick={this.handleClick('Launch Drone')}
@@ -115,6 +127,18 @@ class AskNameModal extends Component {
           {this.props.lastEditingMode === EDITOR_MODE.EDIT_POLYGON
           && (
             <>
+              <button
+                title="Set Alarm"
+                className="btn btn-default p-0"
+                onClick={this.handleClick('Alarm')}
+              >
+                <SVG
+                  className="w-10 h-10 svg-icon flex items-center"
+                  cacheRequests
+                  src="/static/icons/ui/bell.svg"
+                  aria-label="icon bell"
+                />
+              </button>
               <button
                 title="Identify GPS for Drone"
                 className="btn btn-default p-0 rounded-r"

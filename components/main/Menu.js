@@ -84,6 +84,12 @@ class Menu extends Component {
               onChange={(value) => this.props.dispatch(setUiSetting('waitTimeEnabled', value))}
             />
             <Toggle
+              label="Enable Alarm"
+              description="Plays a warning on the browser if any tracked item crosses an alarm designated line."
+              enabled={this.props.uiSettings.get('alarmEnabled')}
+              onChange={(value) => this.props.dispatch(setUiSetting('alarmEnabled', value))}
+            />
+            <Toggle
               label="Enable Drone"
               description="Turns on the Python bridge to launch the drone"
               enabled={this.props.uiSettings.get('droneEnabled')}

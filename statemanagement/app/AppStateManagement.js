@@ -28,6 +28,8 @@ const initialState = fromJS({
   uiSettings: {
     counterEnabled: true,
     waitTimeEnabled: false,
+    alarmEnabled: false,
+    soundAlarm: false,
     droneEnabled: false,
     pathfinderEnabled: true,
     heatmapEnabled: false,
@@ -193,9 +195,12 @@ export function setUiSetting(uiSetting, value) {
     });
 
     // Persist ui settings on server
-    axios.post('/ui', getState().app.get('uiSettings').toJS());
+    if(uiSetting!=='soundAlarm'){
+      axios.post('/ui', getState().app.get('uiSettings').toJS());
+    }
   };
 }
+
 
 export function setURLData(req) {
   return {
@@ -219,9 +224,8 @@ export function startListeningToServerData() {
       if (message.videoResolution) {
         dispatch(setOriginalResolution(message.videoResolution));
       }
-      if (message.uiSettings.droneEnabled) {
-        console.log('********************************* DISPATCH THE DDRONE *******************************' + JSON.stringify(message.uiSettings.droneEnabled));
-        dispatch(setUiSetting('droneEnabled', message.uiSettings.droneEnabled));
+      if (getState().app.get('uiSettings').alarmEnabled) {
+        dispatch(updateUiSetting('soundAlarm', message.uiSettings.soundAlarm));
       }
       dispatch(updateTrackerData(message.trackerDataForLastFrame));
       dispatch(updateAppState(message.appState));

@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import SVG from 'react-inlinesvg';
 
 import { MODE } from '../../utils/constants';
-import {
-  setMode, startRecording, stopRecording, showMenu,setUiSetting,
-} from '../../statemanagement/app/AppStateManagement';
-import BtnRecording from '../shared/BtnRecording';
+import { setMode,showMenu, updateUiSetting } from '../../statemanagement/app/AppStateManagement';
 
 class UIControls extends Component {
   constructor(props) {
@@ -24,12 +21,11 @@ class UIControls extends Component {
       var minutes = Math.floor((diff / 1000) / 60);
       var avg_time = new Date(this.props.recordingStatus.avg_time).toISOString().slice(11,-1);
     }
-console.log('********************** DRONE IS: '+this.props.uiSettings.get('droneEnabled'));
-    if (this.props.uiSettings.get('droneEnabled')){
-      console.log('************** DO BEEPS ***************************************');
+
+    if (this.props.uiSettings.get('soundAlarm')){
       let beep = require('browser-beep')({ frequency: 440, interval: 250  })
       beep(3);
-      this.props.dispatch(setUiSetting('droneEnabled', false));
+      this.props.dispatch(updateUiSetting('soundAlarm', false));
     }
 
     return (
