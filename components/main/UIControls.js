@@ -59,9 +59,9 @@ class UIControls extends Component {
     }
 
     if (this.props.uiSettings.get('droneEnabled')){
-      beep (250, 0.5);
-      beep (1000, 0.2);
-      beep (550, 0.5);
+      this.beep (250, 0.5);
+      this.beep (1000, 0.2);
+      this.beep (550, 0.5);
     }
 
     return (
