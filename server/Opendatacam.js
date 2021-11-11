@@ -629,10 +629,12 @@ module.exports = {
   checkCountingAreaForAction(countingAreaName){
     switch(countingAreaName){
       case 'Wait Time':
-        var beep = require('browser-beep')({ frequency: 830, interval: 50 });
-        beep(2);
         break;
       case 'Launch Drone':
+        let pythonBridge = require('python-bridge');
+        python.ex`import math`;
+        python`math.sqrt(9)`.then(x => console.log('******** Python says: '+x));
+        python.end();
         break;
       case 'GPS Quadrilateral':
         break;
