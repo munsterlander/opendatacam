@@ -627,6 +627,7 @@ module.exports = {
   },
 
   checkCountingAreaForAction(countingAreaName){
+    console.log('************** NAME IS: '+countingAreaName);
     switch(countingAreaName){
       case 'Wait Time':
         break;
