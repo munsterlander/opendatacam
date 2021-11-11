@@ -634,7 +634,10 @@ module.exports = {
       case 'Wait Time':
         break;
       case 'Alarm':
-        if(Opendatacam.uiSettings.alarmEnabled) Opendatacam.uiSettings.soundAlarm = true;
+        if(Opendatacam.uiSettings.alarmEnabled) {
+          Opendatacam.uiSettings.soundAlarm = true;
+          this.sendUpdateToClients();
+        }
         break;
       case 'Launch Drone':
         if(Opendatacam.uiSettings.droneEnabled){
