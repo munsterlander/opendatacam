@@ -23,6 +23,7 @@ class AskNameModal extends Component {
 
   handleClick = value => () => {
     console.log(value);
+    this.setState({ name: value });
   };
 
 
