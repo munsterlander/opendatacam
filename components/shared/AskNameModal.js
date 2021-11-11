@@ -22,10 +22,9 @@ class AskNameModal extends Component {
     this.setState({ name: event.target.value });
   }
 
-  inputChange(event){
-    this.setState({
-      name: 'Wait Time'
-    })
+  inputChange(e){
+    e.preventDefault();
+    this.setState({ name: 'Wait Time' });
   }
 
 
