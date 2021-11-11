@@ -21,6 +21,10 @@ class AskNameModal extends Component {
     this.setState({ name: event.target.value });
   }
 
+  updateName(value) {
+    this.setState({ name: value });
+  }
+
   escFunction(event) {
     if (event.keyCode === 27) {
       this.props.cancel();
@@ -61,7 +65,7 @@ class AskNameModal extends Component {
             value="OK"
           />
           <button
-            className="btn btn-default p-0 rounded-r"
+            className="btn btn-default p-0"
             onClick={() => this.props.cancel()}
           >
             <SVG
@@ -76,8 +80,8 @@ class AskNameModal extends Component {
             <>
               <button
                 title="Calculate Wait Time"
-                className="btn btn-default p-0 rounded-r"
-                onClick=""
+                className="btn btn-default p-0"
+                onClick={this.updateName('Wait Time')}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
