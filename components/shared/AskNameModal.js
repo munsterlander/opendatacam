@@ -11,6 +11,7 @@ class AskNameModal extends Component {
 
     this.state = {
       name: props.name || '',
+      disabled: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -23,6 +24,7 @@ class AskNameModal extends Component {
 
   handleClick = value => (e) => {
     this.state.name = value;
+    this.state.disabled = true;
     e.preventDefault();
   };
 
@@ -57,6 +59,7 @@ class AskNameModal extends Component {
             type="text"
             className="appearance-none rounded-l py-2 px-3"
             value={this.state.name}
+            disabled={this.state.disabled}
             onChange={this.handleChange}
             placeholder="Counter name"
             autoFocus
