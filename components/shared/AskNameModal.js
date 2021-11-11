@@ -73,18 +73,49 @@ class AskNameModal extends Component {
           </button>
           {this.props.lastEditingMode === EDITOR_MODE.EDIT_LINE
           && (
-            <button
-              className="btn btn-default p-0 rounded-r"
-              onClick=""
-            >
-              <SVG
-                className="w-10 h-10 svg-icon flex items-center"
-                cacheRequests
-                src="/static/icons/ui/stopwatch.svg"
-                aria-label="icon stopwatch"
-              />
-            </button>
-
+            <>
+              <button
+                title="Calculate Wait Time"
+                className="btn btn-default p-0 rounded-r"
+                onClick=""
+              >
+                <SVG
+                  className="w-10 h-10 svg-icon flex items-center"
+                  cacheRequests
+                  src="/static/icons/ui/stopwatch.svg"
+                  aria-label="icon stopwatch"
+                />
+              </button>
+              <button
+                title="Port Runner - Launch the Drone"
+                className="btn btn-default p-0 rounded-r"
+                onClick=""
+              >
+                <SVG
+                  className="w-10 h-10 svg-icon flex items-center"
+                  cacheRequests
+                  src="/static/icons/ui/drone.svg"
+                  aria-label="icon drone"
+                />
+              </button>
+            </>
+          )}
+          {this.props.lastEditingMode === EDITOR_MODE.EDIT_POLYGON
+          && (
+            <>
+              <button
+                title="Identify GPS for Drone"
+                className="btn btn-default p-0 rounded-r"
+                onClick=""
+              >
+                <SVG
+                  className="w-10 h-10 svg-icon flex items-center"
+                  cacheRequests
+                  src="/static/icons/ui/gps.svg"
+                  aria-label="icon gps"
+                />
+              </button>
+            </>
           )}
         </form>
         <CanvasEngine mode={CANVAS_RENDERING_MODE.COUNTING_AREAS} />
