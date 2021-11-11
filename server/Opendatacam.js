@@ -15,6 +15,10 @@ const { checkLineIntersection } = require('./tracker/utils');
 const { computeLineBearing } = require('./tracker/utils');
 const config = require('../config.json');
 
+import {
+  setUiSetting,
+} from '../statemanagement/app/AppStateManagement';
+
 const pipeline = promisify(stream.pipeline);
 
 // YOLO delay between retry attempts - default: 30 ms
@@ -632,8 +636,7 @@ module.exports = {
       case 'Wait Time':
         break;
       case 'Launch Drone':
-        Opendatacam.uiSettings.droneEnabled = true;
-        this.sendUpdateToClients();
+        this.props.dispatch(setUiSetting('droneEnabled', true));
         let pythonBridge = require('python-bridge');
         let python = pythonBridge();
         python.ex`import math`;
