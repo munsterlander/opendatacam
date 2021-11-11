@@ -8,9 +8,6 @@ import {
 } from './CounterStateManagement';
 import { fetchHistory } from './HistoryStateManagement';
 import { setOriginalResolution } from './ViewportStateManagement';
-import {
- setUiSetting,
-} from '../statemanagement/app/AppStateManagement';
 
 // Initial state
 const initialState = fromJS({
