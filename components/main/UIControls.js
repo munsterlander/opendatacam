@@ -11,44 +11,11 @@ import BtnRecording from '../shared/BtnRecording';
 class UIControls extends Component {
   constructor(props) {
     super(props);
-    this.audioContext = null;
-    this.oscillatorNode = null;
-    this.stopTime = 0;
   }
 
   // handleStartRecording() {
   //   this.props.dispatch(startCounting());
   // }
-
-
-  beep (frequency, durationSec, ramp=false)
-  {
-      if (this.oscillatorNode == null) {
-          this.audioContext = new (window.this.AudioContext || window.webkitAudioContext) ();
-          this.stopTime = this.audioContext.currentTime;
-
-          this.oscillatorNode = this.audioContext.createOscillator();
-          this.oscillatorNode.type = "sine";
-          this.oscillatorNode.connect (this.audioContext.destination);
-          if (ramp) {
-              this.oscillatorNode.frequency.setValueAtTime (frequency, this.stopTime);
-          }
-          this.oscillatorNode.start ();
-          this.oscillatorNode.onended = function() {
-              this.oscillatorNode = null;
-              this.audioContext = null;
-          }
-      }
-
-      if (ramp) {
-          this.oscillatorNode.frequency.linearRampToValueAtTime (frequency, this.stopTime); // value in hertz
-      } else {
-          this.oscillatorNode.frequency.setValueAtTime (frequency, this.stopTime);  // value in hertz
-      }
-
-      this.stopTime += durationSec;
-      this.oscillatorNode.stop (this.stopTime);
-  }
 
   render() {
     if (this.props.recordingStatus.isRecording) {
@@ -59,9 +26,8 @@ class UIControls extends Component {
     }
 
     if (this.props.uiSettings.get('droneEnabled')){
-      this.beep (250, 0.5);
-      this.beep (1000, 0.2);
-      this.beep (550, 0.5);
+      let beep = require('browser-beep')({ frequency: 830 })
+      beep(5);
     }
 
     return (
