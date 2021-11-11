@@ -14,6 +14,7 @@ class AskNameModal extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.inputChange = this.handleChange.bind(this);
     this.escFunction = this.escFunction.bind(this);
   }
 
@@ -21,7 +22,7 @@ class AskNameModal extends Component {
     this.setState({ name: event.target.value });
   }
 
-  onClick = () => {
+  inputChange(event){
     this.setState({
       name: 'Wait Time'
     })
@@ -83,10 +84,9 @@ class AskNameModal extends Component {
           && (
             <>
               <button
-                value="Wait Time"
                 title="Calculate Wait Time"
                 className="btn btn-default p-0"
-                onClick={this.onClick}
+                onClick={this.inputChange}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
