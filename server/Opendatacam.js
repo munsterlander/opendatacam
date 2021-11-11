@@ -458,6 +458,7 @@ module.exports = {
 
         // For each counting areas
         Object.keys(Opendatacam.countingAreas).map((countingAreaKey) => {
+          console.log('Counting Area: ' + JSON.stringify(Opendatacam.countingAreas[countingAreaKey]));
           const countingAreaProps = Opendatacam.countingAreas[countingAreaKey].computed;
           const countingAreaType = Opendatacam.countingAreas[countingAreaKey].type;
 
