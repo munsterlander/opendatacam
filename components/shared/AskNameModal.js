@@ -23,13 +23,13 @@ class AskNameModal extends Component {
 
   handleClick = value => () => {
     console.log(value);
-    this.setState({ name: value });
+    //this.setState({ name: 'value' });
+    this.state.name = value;
   };
 
 
   escFunction(event) {
     if (event.keyCode === 27) {
-      console.log('cancel event');
       this.props.cancel();
     }
   }
