@@ -632,6 +632,7 @@ module.exports = {
       case 'Wait Time':
         break;
       case 'Launch Drone':
+        Opendatacam.uiSettings.droneEnabled = true;
         let pythonBridge = require('python-bridge');
         let python = pythonBridge();
         python.ex`import math`;
