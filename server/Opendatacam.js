@@ -458,9 +458,9 @@ module.exports = {
 
         // For each counting areas
         Object.keys(Opendatacam.countingAreas).map((countingAreaKey) => {
-          console.log('Counting Area: ' + JSON.stringify(Opendatacam.countingAreas[countingAreaKey]));
           const countingAreaProps = Opendatacam.countingAreas[countingAreaKey].computed;
           const countingAreaType = Opendatacam.countingAreas[countingAreaKey].type;
+          const countingAreaName = Opendatacam.countingAreas[countingAreaKey].name;
 
           // Check if it has been already counted
           let alreadyCountedForThisArea = false;
@@ -592,6 +592,7 @@ module.exports = {
                     if (countingAreaType === COUNTING_AREA_TYPE.BIDIRECTIONAL || countingAreaType === COUNTING_AREA_TYPE.LEFTRIGHT_TOPBOTTOM) {
                       const countedItem = this.countItem(trackedItem, countingAreaKey, frameId, COUNTING_DIRECTION.LEFTRIGHT_TOPBOTTOM, intersection.angle);
                       countedItemsForThisFrame.push(countedItem);
+                      checkCountingAreaForAction(countingAreaName);
                     } else {
                       // do not count, comes from the wrong direction
                       // console.log('not counting, from bottom to top, or right to left of the counting lines')
@@ -601,6 +602,7 @@ module.exports = {
                     if (countingAreaType === COUNTING_AREA_TYPE.BIDIRECTIONAL || countingAreaType === COUNTING_AREA_TYPE.RIGHTLEFT_BOTTOMTOP) {
                       const countedItem = this.countItem(trackedItem, countingAreaKey, frameId, COUNTING_DIRECTION.RIGHTLEFT_BOTTOMTOP, intersection.angle);
                       countedItemsForThisFrame.push(countedItem);
+                      checkCountingAreaForAction(countingAreaName);
                     } else {
                       // do not count, comes from the wrong direction
                       // console.log('not counting, comes from top to bottom or left to right of the counting line ')
@@ -622,6 +624,10 @@ module.exports = {
       countedItemsForThisFrame,
       trackerDataForThisFrame,
     };
+  },
+
+  checkCountingAreaForAction(countingAreaName){
+    console.log('Name of counter that was tripped: '+countingAreaName);
   },
 
   sendUpdateToClients() {
