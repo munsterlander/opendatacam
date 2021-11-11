@@ -663,6 +663,7 @@ module.exports = {
       trackerDataForLastFrame: Opendatacam.trackerDataForLastFrame,
       counterSummary: this.getCounterSummary(),
       trackerSummary: this.getTrackerSummary(),
+      uiSettings: this.getUISettings(),
       videoResolution: Opendatacam.videoResolution,
       appState: {
         yoloStatus: Opendatacam.yolo ? Opendatacam.yolo.getStatus() : null,
