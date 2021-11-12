@@ -205,7 +205,39 @@ module.exports = {
       });
     }
 
+    this.checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection)
     return countedItem;
+  },
+
+  checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
+    //Then we can look through the countingAreas and if GPS Quadrilateral is present, then we can make the calls as necessary.
+    //Probably need to save the lat/lon as calculated fields so it can be added to every item not just drone stuff.
+    //Opendatacam.countingAreas[countingAreaKey].name
+    switch(Opendatacam.countingAreas[countingAreaKey].name){
+      case 'Wait Time':
+        //I don't think anything needs to be done for Wait Time, but this wil be here just in case.
+        break;
+      case 'Alarm':
+        //This is done.
+        if(Opendatacam.uiSettings.alarmEnabled) {
+          Opendatacam.uiSettings.soundAlarm = true;
+          this.sendUpdateToClients();
+        }
+        break;
+      case 'Launch Drone':
+        if(Opendatacam.uiSettings.droneEnabled){
+          let pythonBridge = require('python-bridge');
+          let python = pythonBridge();
+          python.ex`import subprocess`;
+          python`subprocess.call(['../python/drone/launch_and_locate.py', '--passedValue','18'])`.then(x => console.log('******** Python says: '+x));
+          python.end();
+        }
+        break;
+      case 'GPS Quadrilateral':
+        break;
+      default:
+        return;
+    }
   },
 
   /* Persist in DB */
@@ -595,7 +627,6 @@ module.exports = {
                     if (countingAreaType === COUNTING_AREA_TYPE.BIDIRECTIONAL || countingAreaType === COUNTING_AREA_TYPE.LEFTRIGHT_TOPBOTTOM) {
                       const countedItem = this.countItem(trackedItem, countingAreaKey, frameId, COUNTING_DIRECTION.LEFTRIGHT_TOPBOTTOM, intersection.angle);
                       countedItemsForThisFrame.push(countedItem);
-                      this.checkCountingAreaForAction(countingAreaName, trackedItem);
                     } else {
                       // do not count, comes from the wrong direction
                       // console.log('not counting, from bottom to top, or right to left of the counting lines')
@@ -605,7 +636,6 @@ module.exports = {
                     if (countingAreaType === COUNTING_AREA_TYPE.BIDIRECTIONAL || countingAreaType === COUNTING_AREA_TYPE.RIGHTLEFT_BOTTOMTOP) {
                       const countedItem = this.countItem(trackedItem, countingAreaKey, frameId, COUNTING_DIRECTION.RIGHTLEFT_BOTTOMTOP, intersection.angle);
                       countedItemsForThisFrame.push(countedItem);
-                      this.checkCountingAreaForAction(countingAreaName);
                     } else {
                       // do not count, comes from the wrong direction
                       // console.log('not counting, comes from top to bottom or left to right of the counting line ')
@@ -629,31 +659,7 @@ module.exports = {
     };
   },
 
-  checkCountingAreaForAction(countingAreaName,trackedItem){
-    switch(countingAreaName){
-      case 'Wait Time':
-        break;
-      case 'Alarm':
-        if(Opendatacam.uiSettings.alarmEnabled) {
-          Opendatacam.uiSettings.soundAlarm = true;
-          this.sendUpdateToClients();
-        }
-        break;
-      case 'Launch Drone':
-        if(Opendatacam.uiSettings.droneEnabled){
-          let pythonBridge = require('python-bridge');
-          let python = pythonBridge();
-          python.ex`import math`;
-          python`math.sqrt(9)`.then(x => console.log('******** Python says: '+x));
-          python.end();
-        }
-        break;
-      case 'GPS Quadrilateral':
-        break;
-      default:
-        return;
-    }
-  },
+
 
   sendUpdateToClients() {
     const newValue = (Opendatacam.sseResponses.size > 0);
