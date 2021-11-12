@@ -1,3 +1,4 @@
 import math
 
-math.sqrt(passedValue)
+def getSquareRoot(passedValue):
+    math.sqrt(passedValue)
