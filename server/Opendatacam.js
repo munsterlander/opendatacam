@@ -228,8 +228,13 @@ module.exports = {
         if(Opendatacam.uiSettings.droneEnabled){
           let pythonBridge = require('python-bridge');
           let python = pythonBridge();
-          python.ex`import ../python/drone/launch_and_locate`;
-          python`launch_and_locate.getSquareRoot(18)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+          python.ex`
+          import sys, os.path
+          drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/python/drone/')
+          sys.path.append(drone_dir)
+          from launch_and_locate import getSquareRoot
+          `;
+          python`getSquareRoot(18)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
           python.end();
         }
         break;
