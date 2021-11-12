@@ -230,10 +230,10 @@ module.exports = {
           let python = pythonBridge();
           python.ex`
           import sys, os.path
-          drone_dir = (os.path.abspath(os.path.join(os.path.dirname("../../__file__"), '..')) + '/python/drone/')
+          drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/python/drone/')
           sys.path.append(drone_dir)
-          from launch_and_locate import getSquareRoot
-          getSquareRoot(18)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+          `;
+          python`print(drone_dir)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
           python.end();
         }
         break;
