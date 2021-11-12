@@ -232,8 +232,7 @@ module.exports = {
           import sys, os.path
           drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/python/drone/')
           sys.path.append(drone_dir)
-          `;
-          python`print(drone_dir)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+          print(drone_dir)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
           python.end();
         }
         break;
