@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SVG from 'react-inlinesvg';
 
 import { MODE } from '../../utils/constants';
-import { setMode,showMenu, updateUiSetting } from '../../statemanagement/app/AppStateManagement';
+import { setMode,showMenu, setUiSetting } from '../../statemanagement/app/AppStateManagement';
 
 class UIControls extends Component {
   constructor(props) {
