@@ -33,8 +33,8 @@ class AskNameModal extends Component {
   }
 
   handleLatLonChange(event,name) {
-
-    if(typeof event.target !== undefined){
+    console.log(JSON.stringify(event.target));
+    if(event.target){
       console.log('Name to change: '+name);
       switch(name)   {
         case 'bottom_left_lat':
