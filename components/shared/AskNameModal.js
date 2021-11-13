@@ -158,19 +158,21 @@ class AskNameModal extends Component {
           {this.state.showGPS === true
           && (
             <>
-            <div class="grid grid-cols-3 gap-4">
-              <div>Bottom Left</div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
-              <div>Bottom Right</div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
-              <div>Top Right</div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
-              <div>Top Left</div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
-              <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
+            <div class="flex flex-row">
+              <div class="grid grid-cols-3 gap-4">
+                <div class="bg-white">Bottom Left</div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
+                <div class="bg-white">Bottom Right</div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
+                <div class="bg-white">Top Right</div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
+                <div class="bg-white">Top Left</div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Latitude" /></div>
+                <div><input type="text" className="appearance-none rounded-l py-2 px-3" value="" onChange="" placeholder="Longitude" /></div>
+              </div>
             </div>
             </>
           )}
