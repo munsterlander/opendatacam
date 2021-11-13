@@ -29,11 +29,13 @@ class CounterAreasEditor extends Component {
 
     this.isDrawing = false;
     this.points = [];
+    this.polyPoints = 0;
   }
 
   checkIfClosedPolygon(point) {
     let radius = 15;
     if (this.points.length > 2) {
+      this.polyPoints = this.points.length;
       const circleCenter = this.points[0];
 
       const dist_points = (point.x - circleCenter.x) * (point.x - circleCenter.x) + (point.y - circleCenter.y) * (point.y - circleCenter.y);
@@ -287,12 +289,14 @@ class CounterAreasEditor extends Component {
         {this.props.mode === EDITOR_MODE.ASKNAME
           && (
           <AskNameModal
-            points = {this.points.length}
+            polyPoints = {this.polyPoints}
             save={(name) => {
+              this.polyPoints = 0;
               this.props.dispatch(saveCountingAreaName(this.props.selectedCountingArea, name));
               this.props.dispatch(setMode(this.props.lastEditingMode));
             }}
             cancel={(name) => {
+              this.polyPoints = 0;
               this.props.dispatch(deleteCountingArea(this.props.selectedCountingArea));
               this.props.dispatch(setMode(this.props.lastEditingMode));
             }}
