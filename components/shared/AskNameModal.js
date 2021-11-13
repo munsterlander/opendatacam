@@ -29,6 +29,7 @@ class AskNameModal extends Component {
     this.state.showGPS = false;
     if(value === 'GPS Quadrilateral'){
       this.state.showGPS = true;
+      console.log('state is true');
     }
     e.preventDefault();
   };
@@ -155,7 +156,7 @@ class AskNameModal extends Component {
               </button>
             </>
           )}
-          {this.props.showGPS
+          {this.props.showGPS === true
           && (
             <>
             <div class="grid grid-cols-3 gap-4">
