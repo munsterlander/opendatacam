@@ -33,7 +33,8 @@ class AskNameModal extends Component {
   }
 
   handleLatLonChange(event,name) {
-    if(event.target){
+
+    if(typeof event.target !== undefined){
       console.log('Name to change: '+name);
       switch(name)   {
         case 'bottom_left_lat':
@@ -218,7 +219,7 @@ class AskNameModal extends Component {
                 <div className="grid grid-cols-3 align-middle">
                   <div className="bg-white rounded-tl w-33 ">Bottom Left</div>
                   <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_left_lat} onChange={this.handleLatLonChange(this,'bottom_left_lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-33" value={this.state.bottom_left_lon} onChange={this.handleLatLonChange(this,'_')} placeholder="Longitude" /></div>
+                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-33" value={this.state.bottom_left_lon} onChange={this.handleLatLonChange(this,'bottom_left_lon')} placeholder="Longitude" /></div>
                   <div className="bg-white w-33">Bottom Right</div>
                   <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_right_lat} onChange={this.handleLatLonChange(this,'bottom_right_lat')} placeholder="Latitude" /></div>
                   <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_right_lon} onChange={this.handleLatLonChange(this,'bottom_right_lon')} placeholder="Longitude" /></div>
