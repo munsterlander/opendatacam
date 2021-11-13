@@ -52,7 +52,7 @@ class AskNameModal extends Component {
     return (
       <div className="overlay">
         <form
-          className="ask-name flex flex-wrap justify-center max-width-99"
+          className="ask-name flex flex-wrap justify-center"
           onSubmit={(e) => {
             e.preventDefault();
             if (this.state.name !== '') {
@@ -62,7 +62,7 @@ class AskNameModal extends Component {
         >
           <input
             type="text"
-            className="appearance-none rounded-l py-2 px-3 flex-grow"
+            className="appearance-none rounded-l py-2 px-3 flex-grow  max-width-40"
             value={this.state.name}
             disabled={this.state.disabled}
             onChange={this.handleChange}
