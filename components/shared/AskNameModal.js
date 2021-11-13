@@ -14,12 +14,7 @@ class AskNameModal extends Component {
       inputDisabled: false,
       gpsDisabled: true,
       showGPS: false,
-      latlons: {
-        "bottom_left": {"lat":"0.0000","lon":"0.0000" },
-        "bottom_right": {"lat":"0.0000","lon":"0.0000" },
-        "top_right": {"lat":"0.0000","lon":"0.0000" },
-        "top_left": {"lat":"0.0000","lon":"0.0000" },
-      }
+      latlons: {}
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,8 +26,18 @@ class AskNameModal extends Component {
   }
 
   handleLatLonChange(event,name) {
-    console.log(JSON.stringify(event.target));
-    //this.setDepth(this.state.latlons,name,event.target.value);
+    /*
+
+        "bottom_left": {"lat":"0.0000","lon":"0.0000" },
+        "bottom_right": {"lat":"0.0000","lon":"0.0000" },
+        "top_right": {"lat":"0.0000","lon":"0.0000" },
+        "top_left": {"lat":"0.0000","lon":"0.0000" },
+    */
+    //
+    if(event.target){
+      this.setDepth(this.state.latlons,name,event.target.value);
+      console.log(JSON.stringify(this.state.latlons));
+    }
   }
 
   setDepth(obj, path, value) {
