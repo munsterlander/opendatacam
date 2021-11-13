@@ -31,7 +31,8 @@ class AskNameModal extends Component {
   }
 
   handleLatLonChange(event,name) {
-    this.setDepth(this.state.latlons,name,event.target.value);
+    console.log(JSON.stringify(event));
+    //this.setDepth(this.state.latlons,name,event.target.value);
   }
 
   setDepth(obj, path, value) {
