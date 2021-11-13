@@ -31,17 +31,11 @@ class AskNameModal extends Component {
   }
 
   handleLatLonChange(event,name) {
-    /*
-
-        "bottom_left": {"lat":null,"lon":null },
-        "bottom_right": {"lat":null,"lon":null },
-        "top_right": {"lat":null,"lon":null },
-        "top_left": {"lat":null,"lon":null },
-    */
-    //
+    console.log('Name: '+name);
     if(event.target){
+      console.log('Value: '+event.target.value);
       this.setDepth(this.state.latlons,name,event.target.value);
-      console.log(JSON.stringify(this.state.latlons));
+      console.log('change: '+JSON.stringify(this.state.latlons));
     }
   }
 

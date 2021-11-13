@@ -296,7 +296,7 @@ class CounterAreasEditor extends Component {
               this.props.dispatch(setMode(this.props.lastEditingMode));
             }}
             saveGPS={(latlons) => {
-              console.log(JSON.stringify(latlons));
+              console.log('saveGPS: '+JSON.stringify(latlons));
             }}
             cancel={(name) => {
               this.polyPoints = 0;
