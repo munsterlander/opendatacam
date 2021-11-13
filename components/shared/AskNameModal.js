@@ -62,7 +62,7 @@ class AskNameModal extends Component {
         >
           <input
             type="text"
-            className="appearance-none rounded-l py-2 px-3 width-38"
+            className={`appearance-none rounded-l py-2 px-3  ${this.props.lastEditingMode === EDITOR_MODE.EDIT_POLYGON ? "width-[510px]" : ""}`}
             value={this.state.name}
             disabled={this.state.disabled}
             onChange={this.handleChange}
