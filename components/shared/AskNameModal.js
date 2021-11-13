@@ -14,7 +14,12 @@ class AskNameModal extends Component {
       inputDisabled: false,
       gpsDisabled: true,
       showGPS: false,
-      latlons: {}
+      latlons: {
+        "bottom_left": {"lat":null,"lon":null },
+        "bottom_right": {"lat":null,"lon":null },
+        "top_right": {"lat":null,"lon":null },
+        "top_left": {"lat":null,"lon":null },
+      }
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -28,10 +33,10 @@ class AskNameModal extends Component {
   handleLatLonChange(event,name) {
     /*
 
-        "bottom_left": {"lat":"0.0000","lon":"0.0000" },
-        "bottom_right": {"lat":"0.0000","lon":"0.0000" },
-        "top_right": {"lat":"0.0000","lon":"0.0000" },
-        "top_left": {"lat":"0.0000","lon":"0.0000" },
+        "bottom_left": {"lat":null,"lon":null },
+        "bottom_right": {"lat":null,"lon":null },
+        "top_right": {"lat":null,"lon":null },
+        "top_left": {"lat":null,"lon":null },
     */
     //
     if(event.target){
