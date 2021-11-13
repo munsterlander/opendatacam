@@ -11,7 +11,7 @@ class AskNameModal extends Component {
 
     this.state = {
       name: props.name || '',
-      disabled: false,
+      inputDisabled: false,
       showGPS: false,
     };
 
@@ -25,7 +25,7 @@ class AskNameModal extends Component {
 
   handleClick = value => (e) => {
     this.state.name = value;
-    this.state.disabled = true;
+    this.state.inputDisabled = true;
     this.state.showGPS = false;
     if(value === 'GPS Quadrilateral'){
       this.state.showGPS = true;
@@ -42,6 +42,7 @@ class AskNameModal extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
+    console.log('Points: '+this.props.points);
   }
 
   componentWillUnmount() {
@@ -64,7 +65,7 @@ class AskNameModal extends Component {
             type="text"
             className={`appearance-none rounded-l py-2 px-3  ${this.state.showGPS ? "gps_width" : ""}`}
             value={this.state.name}
-            disabled={this.state.disabled}
+            disabled={this.state.inputDisabled}
             onChange={this.handleChange}
             placeholder="Counter name"
             autoFocus
@@ -145,7 +146,7 @@ class AskNameModal extends Component {
                 title="Identify GPS for Drone"
                 className="btn btn-default p-0 rounded-r"
                 onClick={this.handleClick('GPS Quadrilateral')}
-                disabled={`{${this.points === 4 ? "false" : "true"}`}
+                disabled={`{${this.props.points === 4 ? "false" : "true"}`}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
