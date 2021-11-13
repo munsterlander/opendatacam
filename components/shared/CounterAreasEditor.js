@@ -295,6 +295,9 @@ class CounterAreasEditor extends Component {
               this.props.dispatch(saveCountingAreaName(this.props.selectedCountingArea, name));
               this.props.dispatch(setMode(this.props.lastEditingMode));
             }}
+            saveGPS={(latlons) => {
+              console.log(JSON.stringify(latlons));
+            }}
             cancel={(name) => {
               this.polyPoints = 0;
               this.props.dispatch(deleteCountingArea(this.props.selectedCountingArea));
