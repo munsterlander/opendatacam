@@ -36,7 +36,6 @@ class AskNameModal extends Component {
       switch(name)   {
         case 'bottom_left_lat':
           this.setState({bottom_left_lat: event.target.value});
-          console.log('BTL: '+this.state.bottom_left_lat);
           break;
         case 'bottom_left_lon':
           this.setState({bottom_left_lon: event.target.value});
