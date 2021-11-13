@@ -12,6 +12,7 @@ class AskNameModal extends Component {
     this.state = {
       name: props.name || '',
       inputDisabled: false,
+      gpsDisabled: true,
       showGPS: false,
     };
 
@@ -42,7 +43,8 @@ class AskNameModal extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
-    console.log('Points: '+this.props.polyPoints);
+    if(this.props.polyPoints === 4) this.state.gpsDisabled = false;
+
   }
 
   componentWillUnmount() {
@@ -146,7 +148,7 @@ class AskNameModal extends Component {
                 title="Identify GPS for Drone"
                 className="btn btn-default p-0 rounded-r"
                 onClick={this.handleClick('GPS Quadrilateral')}
-                disabled={`{${this.props.polyPoints === 5 ? "false" : "true"}`}
+                disabled={this.state.gpsDisabled}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
