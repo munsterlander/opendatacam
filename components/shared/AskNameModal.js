@@ -62,7 +62,7 @@ class AskNameModal extends Component {
         >
           <input
             type="text"
-            className={`appearance-none rounded-l py-2 px-3  ${this.props.lastEditingMode === EDITOR_MODE.EDIT_POLYGON ? "width-[510px]" : ""}`}
+            className={`appearance-none rounded-l py-2 px-3  ${this.props.lastEditingMode === EDITOR_MODE.EDIT_POLYGON ? "gps_width" : ""}`}
             value={this.state.name}
             disabled={this.state.disabled}
             onChange={this.handleChange}
@@ -197,6 +197,10 @@ class AskNameModal extends Component {
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 6;
+          }
+
+          .gps_width {
+            width: 510px;
           }
         `}
         </style>
