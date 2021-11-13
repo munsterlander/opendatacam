@@ -145,6 +145,7 @@ class AskNameModal extends Component {
                 title="Identify GPS for Drone"
                 className="btn btn-default p-0 rounded-r"
                 onClick={this.handleClick('GPS Quadrilateral')}
+                disabled={`{${this.points === 4 ? "false" : "true"}`}
               >
                 <SVG
                   className="w-10 h-10 svg-icon flex items-center"
