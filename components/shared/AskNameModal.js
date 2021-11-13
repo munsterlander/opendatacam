@@ -33,8 +33,6 @@ class AskNameModal extends Component {
   }
 
   handleLatLonChange = name => (event) => {
-      console.log(JSON.stringify(event.target));
-      console.log('Name to change: '+name);
       switch(name)   {
         case 'bottom_left_lat':
           this.setState({bottom_left_lat: event.target.value});
