@@ -52,7 +52,7 @@ class AskNameModal extends Component {
     return (
       <div className="overlay">
         <form
-          className="ask-name flex"
+          className="ask-name flex flex-wrap"
           onSubmit={(e) => {
             e.preventDefault();
             if (this.state.name !== '') {
