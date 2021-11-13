@@ -26,11 +26,11 @@ class AskNameModal extends Component {
   handleClick = value => (e) => {
     this.state.name = value;
     this.state.disabled = true;
-    e.preventDefault();
     this.state.showGPS = false;
     if(value === 'GPS Quadrilateral'){
       this.state.showGPS = true;
     }
+    e.preventDefault();
   };
 
 
