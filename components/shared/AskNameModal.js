@@ -52,7 +52,7 @@ class AskNameModal extends Component {
     return (
       <div className="overlay">
         <form
-          className="ask-name flex flex-wrap justify-center"
+          className="ask-name flex flex-wrap justify-center max-width-99"
           onSubmit={(e) => {
             e.preventDefault();
             if (this.state.name !== '') {
