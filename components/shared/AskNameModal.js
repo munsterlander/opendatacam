@@ -14,12 +14,14 @@ class AskNameModal extends Component {
       inputDisabled: false,
       gpsDisabled: true,
       showGPS: false,
-      latlons: {
-        "bottom_left": {"lat":null,"lon":null },
-        "bottom_right": {"lat":null,"lon":null },
-        "top_right": {"lat":null,"lon":null },
-        "top_left": {"lat":null,"lon":null },
-      }
+      bottom_left_lat: null,
+      bottom_left_lon: null,
+      bottom_right_lat: null,
+      bottom_right_lon: null,
+      top_right_lat: null,
+      top_right_lon: null,
+      top_left_lat: null,
+      top_left_lon: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,20 +33,36 @@ class AskNameModal extends Component {
   }
 
   handleLatLonChange(event,name) {
-    console.log('Name: '+name);
     if(event.target){
-      console.log('Value: '+event.target.value);
-      this.setDepth(this.state.latlons,name,event.target.value);
-      console.log('change: '+JSON.stringify(this.state.latlons));
+      switch(name)   {
+        case 'bottom_left_lat':
+          this.setState({bottom_left_lat: event.target.value});
+          break;
+        case 'bottom_left_lon':
+          this.setState({bottom_left_lon: event.target.value});
+          break;
+        case 'bottom_right_lat':
+          this.setState({bottom_right_lat: event.target.value});
+          break;
+        case 'bottom_right_lon':
+          this.setState({bottom_right_lon: event.target.value});
+          break;
+        case 'top_right_lat':
+          this.setState({top_right_lat: event.target.value});
+          break;
+        case 'top_right_lon':
+          this.setState({top_right_lon: event.target.value});
+          break;
+        case 'top_left_lat':
+          this.setState({top_left_lat: event.target.value});
+          break;
+        case 'top_left_lon':
+          this.setState({top_left_lon: event.target.value});
+          break;
+        default:
+          return;
+      }
     }
-  }
-
-  setDepth(obj, path, value) {
-    var tags = path.split("."), len = tags.length - 1;
-    for (var i = 0; i < len; i++) {
-        obj = obj[tags[i]];
-    }
-    obj[tags[len]] = value;
   }
 
   handleClick = value => (e) => {
@@ -84,7 +102,13 @@ class AskNameModal extends Component {
             if (this.state.name !== '') {
               this.props.save(this.state.name);
               if(this.state.name === 'GPS Quadrilateral'){
-                this.props.saveGPS(this.state.latlons);
+                const latlons = {
+                  bottom_left: {lat:this.state.bottom_left_lat,lon:this.state.bottom_left_lon},
+                  bottom_right: {lat:this.state.bottom_right_lat,lon:this.state.bottom_right_lon},
+                  top_right: {lat:this.state.top_right_lat,lon:this.state.top_right_lon},
+                  top_left: {lat:this.state.top_left_lat,lon:this.state.top_left_lon},
+                };
+                this.props.saveGPS(latlons);
               }
             }
           }}
@@ -191,17 +215,17 @@ class AskNameModal extends Component {
               <div className="flex flex-row">
                 <div className="grid grid-cols-3 align-middle">
                   <div className="bg-white rounded-tl w-33 ">Bottom Left</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.latlons.bottom_left.lat} onChange={this.handleLatLonChange(this,'bottom_left.lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-33" value={this.state.latlons.bottom_left.lon} onChange={this.handleLatLonChange(this,'bottom_left.lon')} placeholder="Longitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_left_lat} onChange={this.handleLatLonChange(this,'bottom_left_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-33" value={this.state.bottom_left_lon} onChange={this.handleLatLonChange(this,'_')} placeholder="Longitude" /></div>
                   <div className="bg-white w-33">Bottom Right</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.latlons.bottom_right.lat} onChange={this.handleLatLonChange(this,'bottom_right.lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.latlons.bottom_right.lon} onChange={this.handleLatLonChange(this,'bottom_right.lon')} placeholder="Longitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_right_lat} onChange={this.handleLatLonChange(this,'bottom_right_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_right_lon} onChange={this.handleLatLonChange(this,'bottom_right_lon')} placeholder="Longitude" /></div>
                   <div className="bg-white w-33">Top Right</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.latlons.top_right.lat} onChange={this.handleLatLonChange(this,'top_right.lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.latlons.top_right.lon} onChange={this.handleLatLonChange(this,'top_right.lon')} placeholder="Longitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.top_right_lat} onChange={this.handleLatLonChange(this,'top_right_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.top_right_lon} onChange={this.handleLatLonChange(this,'top_right_lon')} placeholder="Longitude" /></div>
                   <div className="bg-white rounded-bl w-33">Top Left</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.latlons.top_left.lat} onChange={this.handleLatLonChange(this,'top_left.lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none rounded-br py-2 px-3 w-33" value={this.state.latlons.top_left.lon} onChange={this.handleLatLonChange(this,'top_left.lon')} placeholder="Longitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.top_left_lat} onChange={this.handleLatLonChange(this,'top_left_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none rounded-br py-2 px-3 w-33" value={this.state.top_left_lon} onChange={this.handleLatLonChange(this,'top_left_lon')} placeholder="Longitude" /></div>
                 </div>
               </div>
             </>
