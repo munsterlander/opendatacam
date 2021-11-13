@@ -160,18 +160,18 @@ class AskNameModal extends Component {
             <>
               <div className="flex flex-row">
                 <div className="grid grid-cols-3">
-                  <div className="bg-white rounded-tl w-24">Bottom Left</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-24" value="" onChange="" placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-24" value="" onChange="" placeholder="Longitude" /></div>
-                  <div className="bg-white w-24">Bottom Right</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-24" value="" onChange="" placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-24" value="" onChange="" placeholder="Longitude" /></div>
-                  <div className="bg-white w-24">Top Right</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-24" value="" onChange="" placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-24" value="" onChange="" placeholder="Longitude" /></div>
-                  <div className="bg-white rounded-bl w-24">Top Left</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-24" value="" onChange="" placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none rounded-br py-2 px-3 w-24" value="" onChange="" placeholder="Longitude" /></div>
+                  <div className="bg-white rounded-tl w-36">Bottom Left</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-36" value="" onChange="" placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-36" value="" onChange="" placeholder="Longitude" /></div>
+                  <div className="bg-white w-36">Bottom Right</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-36" value="" onChange="" placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-36" value="" onChange="" placeholder="Longitude" /></div>
+                  <div className="bg-white w-36">Top Right</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-36" value="" onChange="" placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-36" value="" onChange="" placeholder="Longitude" /></div>
+                  <div className="bg-white rounded-bl w-36">Top Left</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-36" value="" onChange="" placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none rounded-br py-2 px-3 w-36" value="" onChange="" placeholder="Longitude" /></div>
                 </div>
               </div>
             </>
