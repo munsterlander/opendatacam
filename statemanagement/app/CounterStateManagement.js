@@ -36,6 +36,7 @@ const SAVE_COUNTING_AREA_TYPE = 'Counter/SAVE_COUNTING_AREA_TYPE';
 const SET_MODE = 'Counter/SET_MODE';
 const SET_LAST_EDITING_MODE = 'Counter/SET_LAST_EDITING_MODE';
 const SAVE_COUNTING_AREA_NAME = 'Counter/SAVE_COUNTING_AREA_NAME';
+const SAVE_COUNTING_AREA_GPS = 'Counter/SAVE_COUNTING_AREA_GPS';
 const ADD_COUNTING_AREA = 'Counter/ADD_COUNTING_AREA';
 const RESTORE_COUNTING_AREAS = 'Counter/RESTORE_COUNTING_AREAS';
 const RESET_COUNTING_AREAS = 'Counter/RESET_COUNTING_AREAS';
@@ -93,6 +94,7 @@ export function selectCountingArea(id) {
 // TODO LATER , introduce Redux saga here to make it more explicit that this is triggered by
 // => SAVE_COUNTING_AREA_LOCATION
 // => SAVE_COUNTING_AREA_NAME
+// => SAVE_COUNTING_AREA_GPS
 // => DELETE_COUNTING_AREA
 // => SAVE_COUNTING_AREA_TYPE
 export function registerCountingAreasOnServer() {
@@ -243,6 +245,20 @@ export function saveCountingAreaName(id, name) {
     dispatch(registerCountingAreasOnServer());
   };
 }
+export function saveCountingAreaLatLon(id, gps_coordinates) {
+  return (dispatch) => {
+    // console.log('saveName')
+    dispatch({
+      type: SAVE_COUNTING_AREA_GPS,
+      payload: {
+        id,
+        gps_coordinates,
+      },
+    });
+
+    dispatch(registerCountingAreasOnServer());
+  };
+}
 
 export function restoreCountingAreasFromJSON(data) {
   return (dispatch) => {
@@ -342,6 +358,8 @@ export default function CounterReducer(state = initialState, action = {}) {
       return state.setIn(['countingAreas', action.payload.id, 'computed', 'lineBearings'], fromJS(action.payload.lineBearings));
     case SAVE_COUNTING_AREA_NAME:
       return state.setIn(['countingAreas', action.payload.id, 'name'], action.payload.name);
+    case SAVE_COUNTING_AREA_GPS:
+      return state.setIn(['countingAreas', action.payload.id, 'gps_coordinates'], action.payload.gps_coordinates);
     case SAVE_COUNTING_AREA_TYPE:
       return state.setIn(['countingAreas', action.payload.id, 'type'], action.payload.type);
     case ADD_COUNTING_AREA:

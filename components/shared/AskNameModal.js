@@ -100,13 +100,13 @@ class AskNameModal extends Component {
             if (this.state.name !== '') {
               this.props.save(this.state.name);
               if(this.state.name === 'GPS Quadrilateral'){
-                const latlons = {
+                const gps_coordinates = {
                   bottom_left: {lat:this.state.bottom_left_lat,lon:this.state.bottom_left_lon},
                   bottom_right: {lat:this.state.bottom_right_lat,lon:this.state.bottom_right_lon},
                   top_right: {lat:this.state.top_right_lat,lon:this.state.top_right_lon},
                   top_left: {lat:this.state.top_left_lat,lon:this.state.top_left_lon},
                 };
-                this.props.saveGPS(latlons);
+                this.props.saveGPS(gps_coordinates);
               }
             }
           }}

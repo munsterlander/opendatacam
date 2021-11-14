@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import MenuCountingAreasEditor from './MenuCountingAreasEditor';
 
 import {
-  saveCountingAreaLocation, saveCountingAreaName, EDITOR_MODE, deleteCountingArea, computeCountingAreasCenters, addCountingArea, computeDistance, setMode, toggleCountingAreaType,
+  saveCountingAreaLocation, saveCountingAreaName, saveCountingAreaLatLon, EDITOR_MODE, deleteCountingArea, computeCountingAreasCenters, addCountingArea, computeDistance, setMode, toggleCountingAreaType,
 } from '../../statemanagement/app/CounterStateManagement';
 import AskNameModal from './AskNameModal';
 import DeleteModal from './DeleteModal';
@@ -295,8 +295,8 @@ class CounterAreasEditor extends Component {
               this.props.dispatch(saveCountingAreaName(this.props.selectedCountingArea, name));
               this.props.dispatch(setMode(this.props.lastEditingMode));
             }}
-            saveGPS={(latlons) => {
-              console.log('saveGPS: '+JSON.stringify(latlons));
+            saveGPS={(gps_coordinates) => {
+              this.props.dispatch(saveCountingAreaLatLon(this.props.selectedCountingArea, gps_coordinates));
             }}
             cancel={(name) => {
               this.polyPoints = 0;
