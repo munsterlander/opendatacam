@@ -264,7 +264,7 @@ class CounterAreasEditor extends Component {
         if (points.length > 2) {
           let opacity = 0.3;
           if(name === 'GPS Quadrilateral'){
-            opacity = 1;
+            opacity = 0;
           }
 
           this.editorCanvas.add(new fabric.Polygon(points, {
