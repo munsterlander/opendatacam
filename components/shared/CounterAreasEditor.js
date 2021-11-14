@@ -224,9 +224,9 @@ class CounterAreasEditor extends Component {
 
     countingAreas.map((area, id) => {
       if (area.get('location') !== undefined) {
-        console.log(JSON.stringify(area));
         const data = area.get('location').toJS();
         const color = area.get('color');
+        const name = area.get('name');
         const reScalingFactorX = width / data.refResolution.w;
         const reScalingFactorY = height / data.refResolution.h;
 
@@ -262,15 +262,21 @@ class CounterAreasEditor extends Component {
 
         // Draw polygon if length > 2
         if (points.length > 2) {
+          let opacity = 0.3;
+          if(name === 'GPS Quadrilateral'){
+            opacity = 1;
+          }
+
           this.editorCanvas.add(new fabric.Polygon(points, {
             strokeWidth: 5,
             fill: getCounterColor(color),
             stroke: getCounterColor(color),
-            opacity: 0.3,
+            opacity: opacity,
             selectable: false,
             hasBorders: false,
             hasControls: false,
           }));
+
         }
       }
     });
