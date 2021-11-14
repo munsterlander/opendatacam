@@ -224,6 +224,7 @@ class CounterAreasEditor extends Component {
 
     countingAreas.map((area, id) => {
       if (area.get('location') !== undefined) {
+        console.log(JSON.stringify(area));
         const data = area.get('location').toJS();
         const color = area.get('color');
         const reScalingFactorX = width / data.refResolution.w;
