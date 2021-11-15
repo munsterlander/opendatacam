@@ -221,24 +221,23 @@ module.exports = {
   },
 
   async callPython(countingArea){
-    await python.ex`
-    import sys, os.path
-    drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
-    sys.path.append(drone_dir)
-    from convert_coordinates import convertCoordinates
-    `;
-    const tmpOutput = await python`convertCoordinates(
-      ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
-      ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
-      ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
-      ${countingArea.computed.points[3].x},${countingArea.computed.points[3].y},
-      ${countingArea.gps_coordinates.gps_point0.lat},${countingArea.gps_coordinates.gps_point0.lon},
-      ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
-      ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
-      ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
-      ${trackedItem.x},-${trackedItem.y}
-      )`;
-      return tmpOutput;
+      await python.ex`
+      import sys, os.path
+      drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
+      sys.path.append(drone_dir)
+      from convert_coordinates import convertCoordinates
+      `;
+      return await python`convertCoordinates(
+        ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
+        ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
+        ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
+        ${countingArea.computed.points[3].x},${countingArea.computed.points[3].y},
+        ${countingArea.gps_coordinates.gps_point0.lat},${countingArea.gps_coordinates.gps_point0.lon},
+        ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
+        ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
+        ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
+        ${trackedItem.x},-${trackedItem.y}
+        )`;
   },
 
   checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
