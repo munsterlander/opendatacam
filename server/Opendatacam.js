@@ -251,7 +251,7 @@ module.exports = {
       }
     });
     if(countingArea && python){
-      let x = await this.callPython(countingArea).catch(python.Exception, (e) => {
+      let x = this.callPython(countingArea).catch(python.Exception, (e) => {
         console.log('****** OH NO!!! ' + JSON.stringify(e));
       });
       let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
