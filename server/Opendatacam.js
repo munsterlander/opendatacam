@@ -220,6 +220,27 @@ module.exports = {
     return countedItem;
   },
 
+  async callPython(countingArea){
+    await python.ex`
+    import sys, os.path
+    drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
+    sys.path.append(drone_dir)
+    from convert_coordinates import convertCoordinates
+    `;
+    const tmpOutput = await python`convertCoordinates(
+      ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
+      ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
+      ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
+      ${countingArea.computed.points[3].x},${countingArea.computed.points[3].y},
+      ${countingArea.gps_coordinates.gps_point0.lat},${countingArea.gps_coordinates.gps_point0.lon},
+      ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
+      ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
+      ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
+      ${trackedItem.x},-${trackedItem.y}
+      )`;
+      return tmpOutput;
+  },
+
   checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
 // Tracked Item: {"id":120,"x":486,"y":189,"w":49,"h":33,"confidence":0.9,"bearing":274.927109947649,"name":"car","isZombie":false,"counted":[],"areas":["e8a5cfec-205a-4e41-ab77-31e6dbcdadb2"]}
     let calculated_gps;
@@ -230,25 +251,11 @@ module.exports = {
       }
     });
     if(countingArea && python){
-      console.log('Coordinates exist and python is running');
-      python.ex`
-      import sys, os.path
-      drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
-      sys.path.append(drone_dir)
-      from convert_coordinates import convertCoordinates
-      `;
-      python`convertCoordinates(
-        ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
-        ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
-        ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
-        ${countingArea.computed.points[3].x},${countingArea.computed.points[3].y},
-        ${countingArea.gps_coordinates.gps_point0.lat},${countingArea.gps_coordinates.gps_point0.lon},
-        ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
-        ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
-        ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
-        ${trackedItem.x},-${trackedItem.y}
-        )`.then(x => {console.log(x+' - length is: '+x.length);}).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
-          
+      let x = await this.callPython(countingArea).catch(python.Exception, (e) => {
+        console.log('****** OH NO!!! ' + JSON.stringify(e));
+      });
+      let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
+      calculated_gps = {"lat":tmpOutput[0],"lon":tmpOutput[1]};     
     }
     switch(Opendatacam.countingAreas[countingAreaKey].name){
       case 'Wait Time':
@@ -263,8 +270,7 @@ module.exports = {
         break;
       case 'Launch Drone':
         if(Opendatacam.uiSettings.droneEnabled){
-          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>> PYTHON CALLED')
-      //    if(calculated_gps){
+          if(calculated_gps){
             python.ex`
             import sys, os.path
             drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
@@ -272,7 +278,7 @@ module.exports = {
             from launch_and_locate import getSquareRoot
             `;
             python`getSquareRoot(18)`.then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
-     //     }
+          }
         }
         break;
       case 'GPS Quadrilateral':
