@@ -223,9 +223,12 @@ module.exports = {
   checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
 // Tracked Item: {"id":120,"x":486,"y":189,"w":49,"h":33,"confidence":0.9,"bearing":274.927109947649,"name":"car","isZombie":false,"counted":[],"areas":["e8a5cfec-205a-4e41-ab77-31e6dbcdadb2"]}
     let calculated_gps;
-    //const countingArea = Opendatacam.countingAreas.find(x => x.name === 'GPS Quadrilateral');
-    const countingArea = Opendatacam.countingAreas[countingAreaKey].name;
-    console.log('CALL IS BEING MADE. countingArea: '+JSON.stringify(countingArea)+ ' AND python: '+JSON.stringify(python));
+    const countingArea;
+    Object.keys(Opendatacam.countingAreas).map((tmpCountingAreaKey) => {
+      if(Opendatacam.countingAreas[tmpCountingAreaKey].name === 'GPS Quadrilateral'){
+        countingArea = Opendatacam.countingAreas[tmpCountingAreaKey];
+      }
+    });
     if(countingArea && python){
       console.log('Coordinates exist and python is running');
       python.ex`
