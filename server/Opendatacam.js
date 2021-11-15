@@ -263,6 +263,7 @@ module.exports = {
         break;
       case 'Launch Drone':
         if(Opendatacam.uiSettings.droneEnabled){
+          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>> PYTHON CALLED')
       //    if(calculated_gps){
             python.ex`
             import sys, os.path
@@ -270,7 +271,7 @@ module.exports = {
             sys.path.append(drone_dir)
             from launch_and_locate import getSquareRoot
             `;
-            python`getSquareRoot(18)`.then(x => console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+            python`getSquareRoot(18)`.then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
      //     }
         }
         break;
