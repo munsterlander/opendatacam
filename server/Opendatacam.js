@@ -247,7 +247,7 @@ module.exports = {
         ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
         ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
         ${trackedItem.x},-${trackedItem.y}
-        )`.then(x => {console.log(x);}).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+        )`.then(x => {console.log(x+' - length is: '+x.length);}).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
           
     }
     switch(Opendatacam.countingAreas[countingAreaKey].name){
