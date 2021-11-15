@@ -24,7 +24,7 @@ def convertCoordinates(tr_x,tr_y,tl_x,tl_y,bl_x,bl_y,br_x,br_y,tr_lat,tr_lon,tl_
 
     #lonlat_1 = (6.603361, 52.036639)
     #uv_1 = pm.lonlat_to_pixel(lonlat_1)
-    return lonlat_0
+    return "YES"
 
 def main():
     #process command line arguments
