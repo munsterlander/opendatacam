@@ -15,17 +15,12 @@ class PixelMapper(object):
         The (lon, lat) coordinates corresponding to the top left, top right, bottom right, bottom left
         pixels of the known region
     """
-    #def __init__(self, pixel_array, lonlat_array):
-    def __init__(self):
-        #assert pixel_array.shape==(4,2), "Need (4,2) input array"
-        #assert lonlat_array.shape==(4,2), "Need (4,2) input array"
-        #self.M = cv2.getPerspectiveTransform(np.float32(pixel_array),np.float32(lonlat_array))
-        #self.invM = cv2.getPerspectiveTransform(np.float32(lonlat_array),np.float32(pixel_array))
-        cmd = "test"
-
-    def testItWorks(tmp):
-        return tmp
-        
+    def __init__(self, pixel_array, lonlat_array):
+        assert pixel_array.shape==(4,2), "Need (4,2) input array"
+        assert lonlat_array.shape==(4,2), "Need (4,2) input array"
+        self.M = cv2.getPerspectiveTransform(np.float32(pixel_array),np.float32(lonlat_array))
+        self.invM = cv2.getPerspectiveTransform(np.float32(lonlat_array),np.float32(pixel_array))
+            
     def pixel_to_lonlat(self, pixel):
         """
         Convert a set of pixel coordinates to lon-lat coordinates
