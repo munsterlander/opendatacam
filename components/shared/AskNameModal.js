@@ -14,14 +14,14 @@ class AskNameModal extends Component {
       inputDisabled: false,
       gpsDisabled: true,
       showGPS: false,
-      bottom_left_lat: null,
-      bottom_left_lon: null,
-      bottom_right_lat: null,
-      bottom_right_lon: null,
-      top_right_lat: null,
-      top_right_lon: null,
-      top_left_lat: null,
-      top_left_lon: null,
+      point1_lat: null,
+      point1_lon: null,
+      point2_lat: null,
+      point2_lon: null,
+      point3_lat: null,
+      point3_lon: null,
+      point4_lat: null,
+      point4_lon: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,29 +34,29 @@ class AskNameModal extends Component {
 
   handleLatLonChange = name => (event) => {
       switch(name)   {
-        case 'bottom_left_lat':
-          this.setState({bottom_left_lat: event.target.value});
+        case 'point1_lat':
+          this.setState({point1_lat: event.target.value});
           break;
-        case 'bottom_left_lon':
-          this.setState({bottom_left_lon: event.target.value});
+        case 'point1_lon':
+          this.setState({point1_lon: event.target.value});
           break;
-        case 'bottom_right_lat':
-          this.setState({bottom_right_lat: event.target.value});
+        case 'point2_lat':
+          this.setState({point2_lat: event.target.value});
           break;
-        case 'bottom_right_lon':
-          this.setState({bottom_right_lon: event.target.value});
+        case 'point2_lon':
+          this.setState({point2_lon: event.target.value});
           break;
-        case 'top_right_lat':
-          this.setState({top_right_lat: event.target.value});
+        case 'point3_lat':
+          this.setState({point3_lat: event.target.value});
           break;
-        case 'top_right_lon':
-          this.setState({top_right_lon: event.target.value});
+        case 'point3_lon':
+          this.setState({point3_lon: event.target.value});
           break;
-        case 'top_left_lat':
-          this.setState({top_left_lat: event.target.value});
+        case 'point4_lat':
+          this.setState({point4_lat: event.target.value});
           break;
-        case 'top_left_lon':
-          this.setState({top_left_lon: event.target.value});
+        case 'point4_lon':
+          this.setState({point4_lon: event.target.value});
           break;
         default:
           return;
@@ -101,10 +101,10 @@ class AskNameModal extends Component {
               this.props.save(this.state.name);
               if(this.state.name === 'GPS Quadrilateral'){
                 const gps_coordinates = {
-                  bottom_left: {lat:this.state.bottom_left_lat,lon:this.state.bottom_left_lon},
-                  bottom_right: {lat:this.state.bottom_right_lat,lon:this.state.bottom_right_lon},
-                  top_right: {lat:this.state.top_right_lat,lon:this.state.top_right_lon},
-                  top_left: {lat:this.state.top_left_lat,lon:this.state.top_left_lon},
+                  gps_point0: {lat:this.state.point1_lat,lon:this.state.point1_lon},
+                  gps_point1: {lat:this.state.point2_lat,lon:this.state.point2_lon},
+                  gps_point2: {lat:this.state.point3_lat,lon:this.state.point3_lon},
+                  gps_point3: {lat:this.state.point4_lat,lon:this.state.point4_lon},
                 };
                 this.props.saveGPS(gps_coordinates);
               }
@@ -211,19 +211,19 @@ class AskNameModal extends Component {
           && (
             <>
               <div className="flex flex-row">
-                <div className="grid grid-cols-3 align-middle">
-                  <div className="bg-white rounded-tl w-33 ">Bottom Left</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_left_lat} onChange={this.handleLatLonChange('bottom_left_lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-33" value={this.state.bottom_left_lon} onChange={this.handleLatLonChange('bottom_left_lon')} placeholder="Longitude" /></div>
-                  <div className="bg-white w-33">Bottom Right</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_right_lat} onChange={this.handleLatLonChange('bottom_right_lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.bottom_right_lon} onChange={this.handleLatLonChange('bottom_right_lon')} placeholder="Longitude" /></div>
-                  <div className="bg-white w-33">Top Right</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.top_right_lat} onChange={this.handleLatLonChange('top_right_lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.top_right_lon} onChange={this.handleLatLonChange('top_right_lon')} placeholder="Longitude" /></div>
-                  <div className="bg-white rounded-bl w-33">Top Left</div>
-                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.top_left_lat} onChange={this.handleLatLonChange('top_left_lat')} placeholder="Latitude" /></div>
-                  <div><input type="text" className="appearance-none rounded-br py-2 px-3 w-33" value={this.state.top_left_lon} onChange={this.handleLatLonChange('top_left_lon')} placeholder="Longitude" /></div>
+                <div className="grid grid-cols-3">
+                  <div className="bg-white rounded-tl w-33 align-middle">1st Point</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.point1_lat} onChange={this.handleLatLonChange('point1_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none rounded-tr py-2 px-3 w-33" value={this.state.point1_lon} onChange={this.handleLatLonChange('point1_lon')} placeholder="Longitude" /></div>
+                  <div className="bg-white w-33 align-middle">2nd Point</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.point2_lat} onChange={this.handleLatLonChange('point2_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.point2_lon} onChange={this.handleLatLonChange('point2_lon')} placeholder="Longitude" /></div>
+                  <div className="bg-white w-33 align-middle">3rd Point</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.point3_lat} onChange={this.handleLatLonChange('point3_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.point3_lon} onChange={this.handleLatLonChange('point3_lon')} placeholder="Longitude" /></div>
+                  <div className="bg-white rounded-bl w-33 align-middle">4th Point</div>
+                  <div><input type="text" className="appearance-none py-2 px-3 w-33" value={this.state.point4_lat} onChange={this.handleLatLonChange('point4_lat')} placeholder="Latitude" /></div>
+                  <div><input type="text" className="appearance-none rounded-br py-2 px-3 w-33" value={this.state.point4_lon} onChange={this.handleLatLonChange('point4_lon')} placeholder="Longitude" /></div>
                 </div>
               </div>
             </>

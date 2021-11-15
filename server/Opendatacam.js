@@ -193,6 +193,14 @@ module.exports = {
       if ('gpsTimestamp' in trackedItem) {
         countedItem.gpsTimestamp = trackedItem.gpsTimestamp;
       }
+      const returnedObj = this.checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection);
+      if(returnedObj){
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> '+JSON.stringify(returnedObj));
+        /* if(typeof returnedObj.gps_coordinates !== undefined){
+          countedItem.calculated_lat = returnedObj.gps_coordinates.lat;
+          countedItem.calculated_lon = returnedObj.gps_coordinates.lon;
+        } */
+      }
 
       // Add it to the history
       Opendatacam.countedItemsHistory.push(countedItem);
@@ -205,14 +213,38 @@ module.exports = {
       });
     }
 
-    this.checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection)
+    
     return countedItem;
   },
 
   checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
-    //Then we can look through the countingAreas and if GPS Quadrilateral is present, then we can make the calls as necessary.
-    //Probably need to save the lat/lon as calculated fields so it can be added to every item not just drone stuff.
-    //Opendatacam.countingAreas[countingAreaKey].name
+    console.log('******** Tracked Item: '+JSON.stringify(trackedItem));
+
+    let calculated_gps;
+    let pythonBridge = require('python-bridge');
+    let python = pythonBridge();
+    let countingArea = Opendatacam.countingAreas.find(x => x.name === 'GPS Quadrilateral');
+    if(countingArea && python){
+      console.log('Coordinates exist and python is running');
+      python.ex`
+      import sys, os.path
+      drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
+      sys.path.append(drone_dir)
+      from convert_coordinates import convertCoordinates
+      `;
+      python`convertCoordinates(
+        ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
+        ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
+        ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
+        ${countingArea.computed.points[3].x},${countingArea.computed.points[3].y},
+        ${countingArea.gps_coordinates.gps_point0.lat},${countingArea.gps_coordinates.gps_point0.lon},
+        ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
+        ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
+        ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
+        ${trackedItem.x},${trackedItem.y}
+        )`.then(x => calculated_gps = JSON.parse(x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+          
+    }
     switch(Opendatacam.countingAreas[countingAreaKey].name){
       case 'Wait Time':
         //I don't think anything needs to be done for Wait Time, but this wil be here just in case.
@@ -226,23 +258,23 @@ module.exports = {
         break;
       case 'Launch Drone':
         if(Opendatacam.uiSettings.droneEnabled){
-          let pythonBridge = require('python-bridge');
-          let python = pythonBridge();
-          python.ex`
-          import sys, os.path
-          drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
-          sys.path.append(drone_dir)
-          from launch_and_locate import getSquareRoot
-          `;
-          python`getSquareRoot(18)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
-          python.end();
+          if(calculated_gps){
+            python.ex`
+            import sys, os.path
+            drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
+            sys.path.append(drone_dir)
+            from launch_and_locate import getSquareRoot
+            `;
+            python`getSquareRoot(18)`.then(x => console.log('******** Python says: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+          }
         }
         break;
       case 'GPS Quadrilateral':
+        // I don't think anything needs to be done here, but just in case
         break;
-      default:
-        return;
     }
+    python.end();
+    return calculated_gps;
   },
 
   /* Persist in DB */
@@ -500,7 +532,6 @@ module.exports = {
         Object.keys(Opendatacam.countingAreas).map((countingAreaKey) => {
           const countingAreaProps = Opendatacam.countingAreas[countingAreaKey].computed;
           const countingAreaType = Opendatacam.countingAreas[countingAreaKey].type;
-          const countingAreaName = Opendatacam.countingAreas[countingAreaKey].name;
 
           // Check if it has been already counted
           let alreadyCountedForThisArea = false;
