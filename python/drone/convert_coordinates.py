@@ -1,5 +1,5 @@
 import numpy as np
-#import PixelMapper
+import PixelMapper
 
 def convertCoordinates(tr_x,tr_y,tl_x,tl_y,bl_x,bl_y,br_x,br_y,tr_lat,tr_lon,tl_lat,tl_lon,bl_lat,bl_lon,br_lat,br_lon,target_x,target_y):
     quad_coords = {
@@ -25,7 +25,7 @@ def convertCoordinates(tr_x,tr_y,tl_x,tl_y,bl_x,bl_y,br_x,br_y,tr_lat,tr_lon,tl_
 
     #lonlat_1 = (6.603361, 52.036639)
     #uv_1 = pm.lonlat_to_pixel(lonlat_1)
-    return quad_coords
+    return "test"
 
 def main():
     #process command line arguments
