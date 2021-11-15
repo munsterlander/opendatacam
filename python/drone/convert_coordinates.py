@@ -16,7 +16,8 @@ def convertCoordinates(tr_x,tr_y,tl_x,tl_y,bl_x,bl_y,br_x,br_y,tr_lat,tr_lon,tl_
             [br_x,br_y] # bottom right
         ])
     }
-    pm = PixelMapper(quad_coords["pixel"], quad_coords["lonlat"])
+    # pm = PixelMapper(quad_coords["pixel"], quad_coords["lonlat"])
+    pm = PixelMapper(np.array([[tr_lat,tr_lon],[tl_lat,tl_lon],[bl_lat,bl_lon],[br_lat,br_lon]]),np.array([[tr_x,tr_y],[tl_x,tl_y],[bl_x,bl_y],[br_x,br_y]]))
 
     uv_0 = (target_x,target_y) 
     lonlat_0 = pm.pixel_to_lonlat(uv_0)
