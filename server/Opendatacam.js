@@ -227,7 +227,7 @@ module.exports = {
       sys.path.append(drone_dir)
       from convert_coordinates import convertCoordinates
       `;
-      return await python`convertCoordinates(
+      await python`convertCoordinates(
         ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
         ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
         ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
@@ -237,7 +237,12 @@ module.exports = {
         ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
         ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
         ${trackedItem.x},-${trackedItem.y}
-        )`;
+        )`.then(x => {
+            let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
+            return {"lat":tmpOutput[0],"lon":tmpOutput[1]}; 
+        }).catch(python.Exception, (e) => {
+          console.log('****** OH NO!!! ' + JSON.stringify(e));
+        });
   },
 
   checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
@@ -250,11 +255,8 @@ module.exports = {
       }
     });
     if(countingArea && python){
-      let x = this.callPython(countingArea).catch(python.Exception, (e) => {
-        console.log('****** OH NO!!! ' + JSON.stringify(e));
-      });
-      let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
-      calculated_gps = {"lat":tmpOutput[0],"lon":tmpOutput[1]};     
+      calculated_gps = this.callPython(countingArea);
+      console.log(JSON.stringify(calculated_gps));
     }
     switch(Opendatacam.countingAreas[countingAreaKey].name){
       case 'Wait Time':
