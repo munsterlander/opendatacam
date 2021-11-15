@@ -6,7 +6,6 @@ def getSquareRoot(passedValue):
 def main():
     #process command line arguments
     passedValue = 0
-    # call fun()
     res = getSquareRoot(passedValue)
     print(res)
 

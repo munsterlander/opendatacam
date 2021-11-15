@@ -17,6 +17,9 @@ const config = require('../config.json');
 
 const pipeline = promisify(stream.pipeline);
 
+const pythonBridge = require('python-bridge');
+const python = pythonBridge();
+
 // YOLO delay between retry attempts - default: 30 ms
 const HTTP_REQUEST_LISTEN_TO_YOLO_RETRY_DELAY_MS = config.NEURAL_NETWORK_PARAMS.retry_delay_ms;
 // YOLO max wait time to start - default: 3 min = 180s
@@ -218,12 +221,9 @@ module.exports = {
   },
 
   checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
-    console.log('******** Tracked Item: '+JSON.stringify(trackedItem));
-
+// Tracked Item: {"id":120,"x":486,"y":189,"w":49,"h":33,"confidence":0.9,"bearing":274.927109947649,"name":"car","isZombie":false,"counted":[],"areas":["e8a5cfec-205a-4e41-ab77-31e6dbcdadb2"]}
     let calculated_gps;
-    let pythonBridge = require('python-bridge');
-    let python = pythonBridge();
-    let countingArea = Opendatacam.countingAreas.find(x => x.name === 'GPS Quadrilateral');
+    const countingArea = Opendatacam.countingAreas.find(x => x.name === 'GPS Quadrilateral');
     if(countingArea && python){
       console.log('Coordinates exist and python is running');
       python.ex`
@@ -241,7 +241,7 @@ module.exports = {
         ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
         ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
         ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
-        ${trackedItem.x},${trackedItem.y}
+        ${trackedItem.x},-${trackedItem.y}
         )`.then(x => calculated_gps = JSON.parse(x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
           
     }
@@ -273,7 +273,7 @@ module.exports = {
         // I don't think anything needs to be done here, but just in case
         break;
     }
-    python.end();
+  //  python.end();
     return calculated_gps;
   },
 
