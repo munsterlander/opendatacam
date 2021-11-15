@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-
+# Cadle adapted this from: https://medium.com/hal24k-techblog/how-to-track-objects-in-the-real-world-with-tensorflow-sort-and-opencv-a64d9564ccb1
 class PixelMapper(object):
     """
     Create an object for converting pixels to geographic coordinates,
