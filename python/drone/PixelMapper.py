@@ -21,8 +21,8 @@ class PixelMapper(object):
         self.M = cv2.getPerspectiveTransform(np.float32(pixel_array),np.float32(lonlat_array))
         self.invM = cv2.getPerspectiveTransform(np.float32(lonlat_array),np.float32(pixel_array))
 
-    def testItWorks(lat):
-        return lat
+    def testItWorks(tmp):
+        return tmp
         
     def pixel_to_lonlat(self, pixel):
         """

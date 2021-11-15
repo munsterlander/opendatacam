@@ -21,11 +21,11 @@ def convertCoordinates(tr_x,tr_y,tl_x,tl_y,bl_x,bl_y,br_x,br_y,tr_lat,tr_lon,tl_
 
     #uv_0 = (target_x,target_y) 
     #lonlat_0 = pm.pixel_to_lonlat(uv_0)
-    #lonlat_0 = pm.testItWorks(target_x)
+    lonlat_0 = pm.testItWorks("test it works")
 
     #lonlat_1 = (6.603361, 52.036639)
     #uv_1 = pm.lonlat_to_pixel(lonlat_1)
-    return "test"
+    return lonlat_0
 
 def main():
     #process command line arguments
