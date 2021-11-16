@@ -196,14 +196,13 @@ module.exports = {
       if ('gpsTimestamp' in trackedItem) {
         countedItem.gpsTimestamp = trackedItem.gpsTimestamp;
       }
-      const returnedObj = this.checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection);
-      if(returnedObj){
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> '+JSON.stringify(returnedObj));
-        /* if(typeof returnedObj.gps_coordinates !== undefined){
-          countedItem.calculated_lat = returnedObj.gps_coordinates.lat;
-          countedItem.calculated_lon = returnedObj.gps_coordinates.lon;
-        } */
-      }
+
+      this.getCalculatedLatLon(trackedItem).then((results) => {
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> '+results);
+        var resultsJson = JSON.parse(results);
+        countedItem.calculated_lat = resultsJson.lat;
+        countedItem.calculated_lon = resultsJson.lon;
+      });
 
       // Add it to the history
       Opendatacam.countedItemsHistory.push(countedItem);
@@ -215,46 +214,51 @@ module.exports = {
         timeMs: new Date().getTime(),
       });
     }    
+    //Make a call to our hook below for other actions regardless if we are recording or not
+    this.checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection);
     return countedItem;
   },
 
-  checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
-// Tracked Item: {"id":120,"x":486,"y":189,"w":49,"h":33,"confidence":0.9,"bearing":274.927109947649,"name":"car","isZombie":false,"counted":[],"areas":["e8a5cfec-205a-4e41-ab77-31e6dbcdadb2"]}
-    let calculated_gps;
-    let countingArea;
-    Object.keys(Opendatacam.countingAreas).map((tmpCountingAreaKey) => {
-      if(Opendatacam.countingAreas[tmpCountingAreaKey].name === 'GPS Quadrilateral'){
-        countingArea = Opendatacam.countingAreas[tmpCountingAreaKey];
+  async getCalculatedLatLon(trackedItem){
+    try{
+      let countingArea;
+      Object.keys(Opendatacam.countingAreas).map((tmpCountingAreaKey) => {
+        if(Opendatacam.countingAreas[tmpCountingAreaKey].name === 'GPS Quadrilateral'){
+          countingArea = Opendatacam.countingAreas[tmpCountingAreaKey];
+        }
+      });
+      if(countingArea && python){
+        python.ex`
+        import sys, os.path
+        drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
+        sys.path.append(drone_dir)
+        from convert_coordinates import convertCoordinates
+        `;
+        let x = await python`convertCoordinates(
+          ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
+          ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
+          ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
+          ${countingArea.computed.points[3].x},${countingArea.computed.points[3].y},
+          ${countingArea.gps_coordinates.gps_point0.lat},${countingArea.gps_coordinates.gps_point0.lon},
+          ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
+          ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
+          ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
+          ${trackedItem.x},-${trackedItem.y}
+        )`;
+          let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
+          return '{"lat":'+tmpOutput[0]+',"lon":'+tmpOutput[1]+'}';
       }
-    });
-    if(countingArea && python){
-      python.ex`
-      import sys, os.path
-      drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
-      sys.path.append(drone_dir)
-      from convert_coordinates import convertCoordinates
-      `;
-      python`convertCoordinates(
-        ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
-        ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
-        ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
-        ${countingArea.computed.points[3].x},${countingArea.computed.points[3].y},
-        ${countingArea.gps_coordinates.gps_point0.lat},${countingArea.gps_coordinates.gps_point0.lon},
-        ${countingArea.gps_coordinates.gps_point1.lat},${countingArea.gps_coordinates.gps_point1.lon},
-        ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
-        ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
-        ${trackedItem.x},-${trackedItem.y}
-        )`.then(x => {
-            let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
-            calculated_gps = {"lat":tmpOutput[0],"lon":tmpOutput[1]};
-        }).catch(python.Exception, (e) => {
-          console.log('****** OH NO!!! ' + JSON.stringify(e));
-        });
-          
+    } catch (e){
+      console.log(e);
     }
+  },
+
+
+  checkCountingAreaForAction(trackedItem,countingAreaKey,frameId,countingDirection){
+    // Tracked Item: {"id":120,"x":486,"y":189,"w":49,"h":33,"confidence":0.9,"bearing":274.927109947649,"name":"car","isZombie":false,"counted":[],"areas":["e8a5cfec-205a-4e41-ab77-31e6dbcdadb2"]}
     switch(Opendatacam.countingAreas[countingAreaKey].name){
       case 'Wait Time':
-        //I don't think anything needs to be done for Wait Time, but this wil be here just in case.
+        // I don't think anything needs to be done here, but just in case
         break;
       case 'Alarm':
         //This is done.
@@ -265,7 +269,6 @@ module.exports = {
         break;
       case 'Launch Drone':
         if(Opendatacam.uiSettings.droneEnabled){
-          if(calculated_gps){
             python.ex`
             import sys, os.path
             drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
@@ -273,15 +276,12 @@ module.exports = {
             from launch_and_locate import getSquareRoot
             `;
             python`getSquareRoot(18)`.then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
-          }
         }
         break;
       case 'GPS Quadrilateral':
         // I don't think anything needs to be done here, but just in case
         break;
     }
-  //  python.end();
-    return calculated_gps;
   },
 
   /* Persist in DB */
