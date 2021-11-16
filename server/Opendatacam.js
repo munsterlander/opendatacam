@@ -243,16 +243,18 @@ module.exports = {
           let arrLatLon = x.replace(/[\[\]]/g, "").trim().split(" ");
 
           if (Opendatacam.database !== null && arrLatLon.length > 0) {
-            Opendatacam.database.updateRecordingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
-              //console.log(response);
-            }, (error) => {
-              console.log(error);
-            });
-            Opendatacam.database.updateTrackingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
-             // console.log(response);
-            }, (error) => {
-              console.log(error);
-            });
+            if (Opendatacam.recordingStatus.isRecording) {
+              Opendatacam.database.updateRecordingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
+                //console.log(response);
+              }, (error) => {
+                console.log(error);
+              });
+              Opendatacam.database.updateTrackingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
+              // console.log(response);
+              }, (error) => {
+                console.log(error);
+              });
+            }
             if(launchDrone){
               let objLatLon = new Object();
               objLatLon.lat = arrLatLon[0];
