@@ -243,7 +243,7 @@ module.exports = {
           let arrLatLon = x.replace(/[\[\]]/g, "").trim().split(" ");
 
           if (Opendatacam.database !== null && arrLatLon.length > 0) {
-            if (Opendatacam.recordingStatus.isRecording) {
+            if (Opendatacam.recordingStatus.isRecording && Opendatacam.recordingStatus.recordingId) {
               Opendatacam.database.updateRecordingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
                 //console.log(response);
               }, (error) => {
