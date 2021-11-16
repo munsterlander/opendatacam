@@ -197,7 +197,9 @@ module.exports = {
         countedItem.gpsTimestamp = trackedItem.gpsTimestamp;
       }
 
+      console.log('>>>>>>>>>>>> CALLED >>>>>>>>>>>>>>>>>>>>>>>>>>>');
       this.getCalculatedLatLon(trackedItem).then((results) => {
+        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< returned '+JSON.stringify(results));
         countedItem.calculated_lat = results.lat;
         countedItem.calculated_lon = results.lon;
       }).catch((e) => console.log('>>>>>> CALCULATED GPS ERROR' + JSON.stringify(e)));
