@@ -262,7 +262,7 @@ module.exports = {
               Opendatacam.database.persistCalculatedLatLon(trackedItem.id,objLatLon).then((response) => {
                 //console.log(response);
                 console.log('Time to launch the drone!'); //May need to get the unique ID from the database in the response and pass it so we are querying a specific one.
-                python`launch_drone()`
+                python`dbTest()`
                 .then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x))
                 .catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));
               }, (error) => {

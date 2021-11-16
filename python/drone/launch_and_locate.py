@@ -13,6 +13,11 @@ Full documentation is provided at http://python.dronekit.io/examples/simple_goto
 from __future__ import print_function
 import time
 from dronekit import connect, VehicleMode, LocationGlobalRelative
+from pymongo import MongoClient
+# pprint library is used to make the output look more pretty
+from pprint import pprint
+# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+
 
 def arm_and_takeoff(aTargetAltitude):
     """
@@ -99,3 +104,10 @@ def launch_drone():
     # Shut down simulator if it was started.
     if sitl:
         sitl.stop()
+
+def dbTest():
+    client = MongoClient("mongodb://localhost:27017")
+    db=client.admin
+    # Issue the serverStatus command and print the results
+    serverStatusResult=db.command("serverStatus")
+    pprint(serverStatusResult)
