@@ -516,6 +516,98 @@ class MongoDbManager extends DbManagerBase {
     });	
 	}
 
+  async persistCalculatedLatLon(trackedItemId,objLatLon) {
+    return new Promise((resolve, reject) => {
+      this.getDB().then((db) => {
+        db.collection(this.APP_COLLECTION).updateOne({
+          id: 'calculated_gps',
+        }, {
+          $set: {
+            id: 'calculated_gps',
+            trackedItemId: trackedItemId,
+            coordinates: objLatLon,
+          },
+        }, { upsert: true }, (err, r) => {
+          if (err) {
+            this.disconnect().then(() => {
+              this.connect();
+            });
+            reject(err);
+          } else {
+            resolve(r);
+          }
+        });
+      }, (reason) => {
+        reject(reason);
+      });
+    });
+  }
+
+  //TODO:  Finish this call so we can update the recording.  Will also need to do another call to update tracker.
+  async updateRecordingLatLon(recordingId, frameId,itemId,lat,lon) {
+    return new Promise((resolve, reject) => {
+      this.getDB().then((db) => {
+        db.collection(this.RECORDING_COLLECTION).updateOne({
+          id: recordingId,
+        }, {
+          $set: { 
+            "counterHistory.$[elem].calculated_lat" : lat,
+            "counterHistory.$[elem].calculated_lon" : lon,        
+        },
+        }, { 
+            upsert: true,
+            arrayFilters: [ 
+              { "elem.frameId": { $eq: frameId } }, 
+              { "elem.id": { $eq: itemId } }, 
+            ]       
+        }, (err, r) => {
+          if (err) {
+            this.disconnect().then(() => {
+              this.connect();
+            });
+            reject(err);
+          } else {
+            resolve(r);
+          }
+        });
+      }, (reason) => {
+        reject(reason);
+      });
+    });
+  }
+
+  async updateTrackingLatLon(recordingId, frameId,itemId,lat,lon) {
+    return new Promise((resolve, reject) => {
+      this.getDB().then((db) => {
+        db.collection(this.TRACKER_COLLECTION).updateOne({
+          recordingId: recordingId,
+          frameId: frameId
+        }, {
+          $set: { 
+            "objects.$[elem].calculated_lat" : lat,
+            "objects.$[elem].calculated_lon" : lon,        
+        },
+        }, { 
+            upsert: true,
+            arrayFilters: [ 
+              { "elem.id": { $eq: itemId } }, 
+            ]       
+        }, (err, r) => {
+          if (err) {
+            this.disconnect().then(() => {
+              this.connect();
+            });
+            reject(err);
+          } else {
+            resolve(r);
+          }
+        });
+      }, (reason) => {
+        reject(reason);
+      });
+    });
+  }
+
 
 }
 

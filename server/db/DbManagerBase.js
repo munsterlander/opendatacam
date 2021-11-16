@@ -167,6 +167,61 @@ class DbManagerBase {
   async getCounterHistoryOfRecording(recordingId) {
     return Promise.reject(new Error('Not implemented'));
   }
+
+
+    /**
+   * Returns the recordings avg time if Wait Time counter lines were set
+   *
+   * @param {String} recordingId The RFC4122 UUID of the recording as a string
+   *
+   * @returns {Promise<void>}
+   */
+    async getRecordingAvgTime(recordingId) {
+      return Promise.reject(new Error('Not implemented'));
+    }
+
+
+  /**
+   * Persist the calculated lat_lon of a tracked item to be queried by a python process
+   *
+   * @param {*} lat_lon_object
+   *
+   * @returns {Promise<void>}
+   */
+  async persistCalculatedLatLon(lat_lon_object) {
+    return Promise.reject(new Error('Not implemented'));
+  }
+
+  /**
+   * Update the calculated lat_lon in a recording for Recording Collection
+   *
+   * @param {String} recordingId The RFC4122 UUID of the recording as a string
+   * @param {Number} frameId
+   * @param {Number} trackedItemId
+   * @param {Number} lat
+   * @param {Number} lon
+   *
+   * @returns {Promise<void>}
+   */
+  async updateRecordingLatLon(recordingId, frameId,trackedItemId,lat,lon) {
+    return Promise.reject(new Error('Not implemented'));
+  }
+
+   /**
+   * Update the calculated lat_lon in a recording for Tracking Collection
+   *
+   * @param {String} recordingId The RFC4122 UUID of the recording as a string
+   * @param {Number} frameId
+   * @param {Number} trackedItemId
+   * @param {Number} lat
+   * @param {Number} lon
+   *
+   * @returns {Promise<void>}
+   */
+   async updateTrackingLatLon(recordingId, frameId,trackedItemId,lat,lon) {
+    return Promise.reject(new Error('Not implemented'));
+  }
+
 }
 
 module.exports = { DbManagerBase };

@@ -17,8 +17,15 @@ const config = require('../config.json');
 
 const pipeline = promisify(stream.pipeline);
 
+//Setup python globally to reduce load times
 const pythonBridge = require('python-bridge');
 const python = pythonBridge();
+python.ex`
+  import sys, os.path
+  drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
+  sys.path.append(drone_dir)
+  from convert_coordinates import convertCoordinates
+  from launch_and_locate import launch_drone`;
 
 // YOLO delay between retry attempts - default: 30 ms
 const HTTP_REQUEST_LISTEN_TO_YOLO_RETRY_DELAY_MS = config.NEURAL_NETWORK_PARAMS.retry_delay_ms;
@@ -196,13 +203,8 @@ module.exports = {
       if ('gpsTimestamp' in trackedItem) {
         countedItem.gpsTimestamp = trackedItem.gpsTimestamp;
       }
-
-      console.log('>>>>>>>>>>>> CALLED >>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      this.getCalculatedLatLon(trackedItem).then((results) => {
-        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< returned '+JSON.stringify(results));
-        countedItem.calculated_lat = results.lat;
-        countedItem.calculated_lon = results.lon;
-      }).catch((e) => console.log('>>>>>> CALCULATED GPS ERROR' + JSON.stringify(e)));
+      //Make a call to record the lat long for any item
+      this.getCalculatedLatLon(trackedItem,frameId,false); //Is this needed?
 
       // Add it to the history
       Opendatacam.countedItemsHistory.push(countedItem);
@@ -219,8 +221,7 @@ module.exports = {
     return countedItem;
   },
 
-  async getCalculatedLatLon(trackedItem){
-    try{
+  getCalculatedLatLon(trackedItem,frameId,launchDrone){
       let countingArea;
       Object.keys(Opendatacam.countingAreas).map((tmpCountingAreaKey) => {
         if(Opendatacam.countingAreas[tmpCountingAreaKey].name === 'GPS Quadrilateral'){
@@ -228,13 +229,7 @@ module.exports = {
         }
       });
       if(countingArea && python){
-        python.ex`
-        import sys, os.path
-        drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
-        sys.path.append(drone_dir)
-        from convert_coordinates import convertCoordinates
-        `;
-        let x = await python`convertCoordinates(
+        python`convertCoordinates(
           ${countingArea.computed.points[0].x},${countingArea.computed.points[0].y},
           ${countingArea.computed.points[1].x},${countingArea.computed.points[1].y},
           ${countingArea.computed.points[2].x},${countingArea.computed.points[2].y},
@@ -244,16 +239,39 @@ module.exports = {
           ${countingArea.gps_coordinates.gps_point2.lat},${countingArea.gps_coordinates.gps_point2.lon},
           ${countingArea.gps_coordinates.gps_point3.lat},${countingArea.gps_coordinates.gps_point3.lon},
           ${trackedItem.x},-${trackedItem.y}
-        )`;
-          let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
-          let results = new Object();
-          results.lat = tmpOutput[0];
-          results.lon = tmpOutput[1];
-          return results;
+        )`.then((x) => {
+          let arrLatLon = x.replace(/[\[\]]/g, "").trim().split(" ");
+
+          if (Opendatacam.database !== null && arrLatLon.length > 0) {
+            Opendatacam.database.updateRecordingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
+              console.log(response);
+            }, (error) => {
+              console.log(error);
+            });
+            Opendatacam.database.updateTrackingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
+              console.log(response);
+            }, (error) => {
+              console.log(error);
+            });
+            if(launchDrone){
+              let objLatLon = new Object();
+              objLatLon.lat = arrLatLon[0];
+              objLatLon.lon = arrLatLon[1];
+              Opendatacam.database.persistCalculatedLatLon(trackedItem.id,objLatLon).then((response) => {
+                console.log(response);
+                console.log('Time to launch the drone!'); //May need to get the unique ID from the database in the response and pass it so we are querying a specific one.
+                python`launch_drone()`
+                .then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x))
+                .catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));
+              }, (error) => {
+                console.log(error);
+              });             
+            }
+          }
+
+        })
+        .catch((e) => console.log('>>>>>> CALCULATED GPS ERROR' + JSON.stringify(e)));
       }
-    } catch (e){
-      console.log(e);
-    }
   },
 
 
@@ -272,13 +290,7 @@ module.exports = {
         break;
       case 'Launch Drone':
         if(Opendatacam.uiSettings.droneEnabled){
-            python.ex`
-            import sys, os.path
-            drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
-            sys.path.append(drone_dir)
-            from launch_and_locate import getSquareRoot
-            `;
-            python`getSquareRoot(18)`.then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x)).catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));;
+          this.getCalculatedLatLon(trackedItem,frameId,true); 
         }
         break;
       case 'GPS Quadrilateral':
