@@ -197,8 +197,10 @@ module.exports = {
         countedItem.gpsTimestamp = trackedItem.gpsTimestamp;
       }
 
+      countedItem.calculated_lat = 0;
+        countedItem.calculated_lon = 0;
+
       this.getCalculatedLatLon(trackedItem).then((results) => {
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> '+results);
         var resultsJson = JSON.parse(results);
         countedItem.calculated_lat = resultsJson.lat;
         countedItem.calculated_lon = resultsJson.lon;
