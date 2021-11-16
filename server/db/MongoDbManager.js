@@ -543,7 +543,6 @@ class MongoDbManager extends DbManagerBase {
     });
   }
 
-  //TODO:  Finish this call so we can update the recording.  Will also need to do another call to update tracker.
   async updateRecordingLatLon(recordingId, frameId,itemId,lat,lon) {
     return new Promise((resolve, reject) => {
       this.getDB().then((db) => {
@@ -557,8 +556,8 @@ class MongoDbManager extends DbManagerBase {
         }, { 
             upsert: true,
             arrayFilters: [ 
-              { "elem.frameId": { $eq: frameId } }, 
-              { "elem.id": { $eq: itemId } }, 
+              { "elem.frameId": frameId , 
+               "elem.id": itemId}, 
             ]       
         }, (err, r) => {
           if (err) {
@@ -590,7 +589,7 @@ class MongoDbManager extends DbManagerBase {
         }, { 
             upsert: true,
             arrayFilters: [ 
-              { "elem.id": { $eq: itemId } }, 
+              { "elem.id": itemId}, 
             ]       
         }, (err, r) => {
           if (err) {
