@@ -25,7 +25,7 @@ python.ex`
   drone_dir = (os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')) + '/opendatacam/python/drone/')
   sys.path.append(drone_dir)
   from convert_coordinates import convertCoordinates
-  from launch_and_locate import dbTest`;
+  from launch_and_locate import launch_drone`;
 
 // YOLO delay between retry attempts - default: 30 ms
 const HTTP_REQUEST_LISTEN_TO_YOLO_RETRY_DELAY_MS = config.NEURAL_NETWORK_PARAMS.retry_delay_ms;
@@ -262,7 +262,7 @@ module.exports = {
               Opendatacam.database.persistCalculatedLatLon(trackedItem.id,objLatLon).then((response) => {
                 //console.log(response);
                 console.log('Time to launch the drone!'); //May need to get the unique ID from the database in the response and pass it so we are querying a specific one.
-                python`dbTest()`
+                python`launch_drone(${trackedItem.id})`
                 .then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x))
                 .catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));
               }, (error) => {
