@@ -197,14 +197,10 @@ module.exports = {
         countedItem.gpsTimestamp = trackedItem.gpsTimestamp;
       }
 
-      countedItem.calculated_lat = 0;
-        countedItem.calculated_lon = 0;
-
       this.getCalculatedLatLon(trackedItem).then((results) => {
-        var resultsJson = JSON.parse(results);
-        countedItem.calculated_lat = resultsJson.lat;
-        countedItem.calculated_lon = resultsJson.lon;
-      });
+        countedItem.calculated_lat = results.lat;
+        countedItem.calculated_lon = results.lon;
+      }).catch((e) => console.log('>>>>>> CALCULATED GPS ERROR' + JSON.stringify(e)));
 
       // Add it to the history
       Opendatacam.countedItemsHistory.push(countedItem);
@@ -248,7 +244,10 @@ module.exports = {
           ${trackedItem.x},-${trackedItem.y}
         )`;
           let tmpOutput = x.replace(/[\[\]]/g, "").trim().split(" ");
-          return '{"lat":'+tmpOutput[0]+',"lon":'+tmpOutput[1]+'}';
+          let results = new Object();
+          results.lat = tmpOutput[0];
+          results.lon = tmpOutput[1];
+          return results;
       }
     } catch (e){
       console.log(e);
