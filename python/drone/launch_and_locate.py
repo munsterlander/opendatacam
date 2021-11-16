@@ -14,9 +14,6 @@ from __future__ import print_function
 import time
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 from pymongo import MongoClient
-# pprint library is used to make the output look more pretty
-from pprint import pprint
-# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
 
 
 def arm_and_takeoff(aTargetAltitude):
@@ -54,60 +51,69 @@ def arm_and_takeoff(aTargetAltitude):
             break
         time.sleep(1)
 
-def launch_drone():
-    # Set up option parsing to get connection string
-    #import argparse
-    #parser = argparse.ArgumentParser(description='Commands vehicle using vehicle.simple_goto.')
-    #parser.add_argument('--connect',help="Vehicle connection target string. If not specified, SITL automatically started and used.")
-    #args = parser.parse_args()
+def launch_drone(targetId):
+    #Connect to DB
+    client = MongoClient('mongodb://127.0.0.1:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false')    
+    if client:
+        result = client['opendatacam']['app'].find_one(
+            {
+                'id': 'calculated_gps', 
+                'trackedItemId': targetId
+            },
+            {
+                "_id":0,
+                "coordinates":1
+            }
+        )
+        if result:
+            print('There are coordinates %s' % result['coordinates']['lat'])
+            # Set up option parsing to get connection string
+            import argparse
+            parser = argparse.ArgumentParser(description='Commands vehicle using vehicle.simple_goto.')
+            parser.add_argument('--connect',help="Vehicle connection target string. If not specified, SITL automatically started and used.")
+            args = parser.parse_args()
 
-    #connection_string = args.connect
-    #sitl = None
+            connection_string = args.connect
+            sitl = None
 
 
-    # Start SITL if no connection string specified
-    #if not connection_string:
-    #    import dronekit_sitl
-    #    sitl = dronekit_sitl.start_default()
-    #    connection_string = sitl.connection_string()
+            # Start SITL if no connection string specified
+            if not connection_string:
+                import dronekit_sitl
+                sitl = dronekit_sitl.start_default()
+                connection_string = sitl.connection_string()
 
 
-    # Connect to the Vehicle
-    print('Connecting to vehicle on: %s' % connection_string)
-    vehicle = connect(connection_string, wait_ready=True)
-    arm_and_takeoff(10)
+            # Connect to the Vehicle
+            print('Connecting to vehicle on: %s' % connection_string)
+            vehicle = connect(connection_string, wait_ready=True)
+            arm_and_takeoff(10)
 
-    print("Set default/target airspeed to 3")
-    vehicle.airspeed = 3
+            print("Set default/target airspeed to 3")
+            vehicle.airspeed = 3
 
-    print("Going towards first point for 30 seconds ...")
-    point1 = LocationGlobalRelative(-35.361354, 149.165218, 20)
-    vehicle.simple_goto(point1)
 
-    # sleep so we can see the change in map
-    time.sleep(30)
 
-    print("Going towards second point for 30 seconds (groundspeed set to 10 m/s) ...")
-    point2 = LocationGlobalRelative(-35.363244, 149.168801, 20)
-    vehicle.simple_goto(point2, groundspeed=10)
 
-    # sleep so we can see the change in map
-    time.sleep(30)
+            print("Going to target now ...")
+            point1 = LocationGlobalRelative(result['coordinates']['lat'], result['coordinates']['lon'], 60)
+            vehicle.simple_goto(point1)
 
-    print("Returning to Launch")
-    vehicle.mode = VehicleMode("RTL")
 
-    # Close vehicle object before exiting script
-    print("Close vehicle object")
-    vehicle.close()
 
-    # Shut down simulator if it was started.
-    if sitl:
-        sitl.stop()
+            # Close vehicle object before exiting script
+            print("Close vehicle object")
+            vehicle.close()
 
-def dbTest():
-    client = MongoClient("mongodb://localhost:27017")
-    db=client.admin
-    # Issue the serverStatus command and print the results
-    serverStatusResult=db.command("serverStatus")
-    pprint(serverStatusResult)
+            # Shut down simulator if it was started.
+            if sitl:
+                sitl.stop()
+
+def main():
+    #process command line arguments
+    targetId = 0
+    res = launch_drone(targetId)
+    print(res)
+
+if __name__ == "__main__":
+    main()
