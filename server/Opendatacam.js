@@ -244,12 +244,12 @@ module.exports = {
 
           if (Opendatacam.database !== null && arrLatLon.length > 0) {
             Opendatacam.database.updateRecordingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
-              console.log(response);
+              //console.log(response);
             }, (error) => {
               console.log(error);
             });
             Opendatacam.database.updateTrackingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
-              console.log(response);
+             // console.log(response);
             }, (error) => {
               console.log(error);
             });
@@ -258,7 +258,7 @@ module.exports = {
               objLatLon.lat = arrLatLon[0];
               objLatLon.lon = arrLatLon[1];
               Opendatacam.database.persistCalculatedLatLon(trackedItem.id,objLatLon).then((response) => {
-                console.log(response);
+                //console.log(response);
                 console.log('Time to launch the drone!'); //May need to get the unique ID from the database in the response and pass it so we are querying a specific one.
                 python`launch_drone()`
                 .then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x))
