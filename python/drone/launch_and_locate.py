@@ -71,7 +71,7 @@ def getCurrentLatLon(client,recordingId,targetId):
     filter=filter,
     projection=project,
     sort=sort,
-    #limit=limit
+    limit=limit
     )
 
 def main():
