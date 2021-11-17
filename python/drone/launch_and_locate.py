@@ -68,15 +68,8 @@ def launch_drone(targetId):
         if result:
             print('There are coordinates Lat:',result['coordinates']['lat'],'Lon:',result['coordinates']['lon'])
 
-            print('Lets run the simulator')
-            import dronekit_sitl
-            sitl = dronekit_sitl.start_default()
-            connection_string = sitl.connection_string()
-
-
             # Connect to the Vehicle
-            print('Connecting to vehicle on: %s' % connection_string)
-            vehicle = connect(connection_string, wait_ready=True)
+            vehicle = connect('127.0.0.1', wait_ready=True)
             arm_and_takeoff(10)
 
             print("Set default/target airspeed to 3")
@@ -89,10 +82,6 @@ def launch_drone(targetId):
             # Close vehicle object before exiting script
             print("Close vehicle object")
             vehicle.close()
-
-            # Shut down simulator if it was started.
-            if sitl:
-                sitl.stop()
 
 def main():
     #process command line arguments
