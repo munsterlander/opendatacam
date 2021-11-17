@@ -204,7 +204,7 @@ module.exports = {
         countedItem.gpsTimestamp = trackedItem.gpsTimestamp;
       }
       //Make a call to record the lat long for any item
-      this.getCalculatedLatLon(trackedItem,frameId,false); //Is this needed?
+      this.getCalculatedLatLon(trackedItem,frameId); //Is this needed?
 
       // Add it to the history
       Opendatacam.countedItemsHistory.push(countedItem);
@@ -221,7 +221,7 @@ module.exports = {
     return countedItem;
   },
 
-  getCalculatedLatLon(trackedItem,frameId,launchDrone){
+  getCalculatedLatLon(trackedItem,frameId){
       let countingArea;
       Object.keys(Opendatacam.countingAreas).map((tmpCountingAreaKey) => {
         if(Opendatacam.countingAreas[tmpCountingAreaKey].name === 'GPS Quadrilateral'){
@@ -244,30 +244,29 @@ module.exports = {
 
           if (Opendatacam.database !== null && arrLatLon.length > 0) {
             if (Opendatacam.recordingStatus.isRecording && Opendatacam.recordingStatus.recordingId) {
-              Opendatacam.database.updateRecordingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
-                //console.log(response);
+              Opendatacam.database.updateRecordingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then(() => {
               }, (error) => {
                 console.log(error);
               });
-              Opendatacam.database.updateTrackingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then((response) => {
-              // console.log(response);
+              Opendatacam.database.updateTrackingLatLon(Opendatacam.recordingStatus.recordingId, frameId,trackedItem.id,arrLatLon[0],arrLatLon[1]).then(() => {
               }, (error) => {
                 console.log(error);
-              });
-            }
-            if(launchDrone){
-              let objLatLon = new Object();
-              objLatLon.lat = arrLatLon[0];
-              objLatLon.lon = arrLatLon[1];
-              Opendatacam.database.persistCalculatedLatLon(trackedItem.id,objLatLon).then((response) => {
-                //console.log(response);
-                console.log('Time to launch the drone!'); //May need to get the unique ID from the database in the response and pass it so we are querying a specific one.
-                python`launch_drone(${trackedItem.id})`
-                .then(x => console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Python returned: '+x))
-                .catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));
-              }, (error) => {
-                console.log(error);
-              });             
+              });            
+              if(Opendatacam.uiSettings.droneEnabled){
+                let objLatLon = new Object();
+                objLatLon.lat = arrLatLon[0];
+                objLatLon.lon = arrLatLon[1];
+                Opendatacam.database.persistCalculatedLatLon(Opendatacam.recordingStatus.recordingId,trackedItem.id,objLatLon).then(() => {
+                  console.log('Time to launch the drone!');
+                  python`launch_drone(${trackedItem.id})`
+                  .then(() => {
+                    Opendatacam.uiSettings.droneEnabled=false;
+                  })
+                  .catch(python.Exception, (e) => console.log('****** OH NO!!! ' + JSON.stringify(e)));
+                }, (error) => {
+                  console.log(error);
+                });             
+              }
             }
           }
 
@@ -292,7 +291,7 @@ module.exports = {
         break;
       case 'Launch Drone':
         if(Opendatacam.uiSettings.droneEnabled){
-          this.getCalculatedLatLon(trackedItem,frameId,true); 
+          this.getCalculatedLatLon(trackedItem,frameId); 
         }
         break;
       case 'GPS Quadrilateral':

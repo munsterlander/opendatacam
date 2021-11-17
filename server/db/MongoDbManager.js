@@ -516,8 +516,7 @@ class MongoDbManager extends DbManagerBase {
     });	
 	}
 
-  async persistCalculatedLatLon(trackedItemId,objLatLon) {
-    let currentTimestamp = new Date().toISOString();
+  async persistCalculatedLatLon(recordingId,trackedItemId,objLatLon) {
     return new Promise((resolve, reject) => {
       this.getDB().then((db) => {
         db.collection(this.APP_COLLECTION).updateOne({
@@ -525,9 +524,9 @@ class MongoDbManager extends DbManagerBase {
         }, {
           $set: {
             id: 'calculated_gps',
+            recordingId: recordingId,
             trackedItemId: trackedItemId,
             coordinates: objLatLon,
-            timestamp: currentTimestamp,
           },
         }, { upsert: true }, (err, r) => {
           if (err) {
