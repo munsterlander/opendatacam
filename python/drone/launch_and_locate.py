@@ -19,15 +19,16 @@ def launch_drone(targetId):
 
             #lets see if the result timestamp is newer than the last 15 seconds as it should be updated every 33ms
             while  ((parse_datetime(currentLocation['timestamp']) > (datetime.now() - datetime.timedelta(seconds=15))) and (not currentLocation['objects']['calculated_lat'] is None and not currentLocation['objects']['calculated_lon'] is None)) :
-                print("Going to new target location now ...")
+                print('There are NEW coordinates Lat:',currentLocation['currentLocation']['calculated_lat'],'Lon:',currentLocation['objects']['calculated_lon'])  
                 #insert drone code here about going to the target
-                #goTo(currentLocation['objects']['calculated_lat],currentLocation['objects']['calculated_lon'],60)
-
-                sleep(10) #lets sleep for testing
+                #goTo(currentLocation['objects']['calculated_lat'],currentLocation['objects']['calculated_lon'],60)
+                
+                sleep(1) #lets sleep for testing
                 #requery db
                 currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
             
             #while condition is no longer valid put drone in position hold and rely on failsafes for RTL and end script
+            print("Drone will hold position as the vehicle is lost")
 
 def getInitialLatLon(client,targetId):
     return client['opendatacam']['app'].find_one(
