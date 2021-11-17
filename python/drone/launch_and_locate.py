@@ -66,22 +66,12 @@ def launch_drone(targetId):
             }
         )
         if result:
-            print('There are coordinates %s' % result['coordinates']['lat'])
-            # Set up option parsing to get connection string
-            import argparse
-            parser = argparse.ArgumentParser(description='Commands vehicle using vehicle.simple_goto.')
-            parser.add_argument('--connect',help="Vehicle connection target string. If not specified, SITL automatically started and used.")
-            args = parser.parse_args()
+            print('There are coordinates Lat:',result['coordinates']['lat'],'Lon:',result['coordinates']['lon'])
 
-            connection_string = args.connect
-            sitl = None
-
-
-            # Start SITL if no connection string specified
-            if not connection_string:
-                import dronekit_sitl
-                sitl = dronekit_sitl.start_default()
-                connection_string = sitl.connection_string()
+            print('Lets run the simulator')
+            import dronekit_sitl
+            sitl = dronekit_sitl.start_default()
+            connection_string = sitl.connection_string()
 
 
             # Connect to the Vehicle
@@ -92,14 +82,9 @@ def launch_drone(targetId):
             print("Set default/target airspeed to 3")
             vehicle.airspeed = 3
 
-
-
-
             print("Going to target now ...")
             point1 = LocationGlobalRelative(result['coordinates']['lat'], result['coordinates']['lon'], 60)
             vehicle.simple_goto(point1)
-
-
 
             # Close vehicle object before exiting script
             print("Close vehicle object")
