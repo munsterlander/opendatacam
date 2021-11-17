@@ -260,6 +260,7 @@ module.exports = {
                 Opendatacam.database.persistCalculatedLatLon(Opendatacam.recordingStatus.recordingId,trackedItem.id,objLatLon).then(() => {
                   console.log('Time to launch the drone!');
                   Opendatacam.uiSettings.droneEnabled=false;
+                  this.sendUpdateToClients();
                   python`launch_drone(${trackedItem.id})`
                   .then((x) => {
                     console.log(x);
