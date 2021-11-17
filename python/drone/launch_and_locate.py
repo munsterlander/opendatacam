@@ -9,7 +9,7 @@ def launch_drone(targetId):
     if client:
         initialLocation = getInitialLatLon(client,targetId)
         if initialLocation:
-            print('There are coordinates Lat: %s Lon: %s' % initialLocation['coordinates']['lat'] % initialLocation['coordinates']['lon'])  
+            print('There are coordinates Lat: %s Lon: %s' % (initialLocation['coordinates']['lat'],initialLocation['coordinates']['lon']))  
             
             #Send drone to initial location
             #insert drone code here about launching and going to the target
