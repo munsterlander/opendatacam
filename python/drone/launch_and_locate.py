@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, timedelta
 from ciso8601 import parse_datetime
 from time import sleep
 
@@ -9,7 +9,7 @@ def launch_drone(targetId):
     if client:
         initialLocation = getInitialLatLon(client,targetId)
         if initialLocation:
-            print('There are coordinates Lat:',initialLocation['coordinates']['lat'],'Lon:',initialLocation['coordinates']['lon'])  
+            print('There are coordinates Lat: %s Lon: %s' % initialLocation['coordinates']['lat'] % initialLocation['coordinates']['lon'])  
             
             #Send drone to initial location
             #insert drone code here about launching and going to the target
@@ -17,17 +17,18 @@ def launch_drone(targetId):
 
             currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
 
-            #lets see if the result timestamp is newer than the last 15 seconds as it should be updated every 33ms
-            while  ((parse_datetime(currentLocation['timestamp']) > (datetime.now() - datetime.timedelta(seconds=15))) and (not currentLocation['objects']['calculated_lat'] is None and not currentLocation['objects']['calculated_lon'] is None)) :
-                print('There are NEW coordinates Lat:',currentLocation['currentLocation']['calculated_lat'],'Lon:',currentLocation['objects']['calculated_lon'])  
-                #insert drone code here about going to the target
-                #goTo(currentLocation['objects']['calculated_lat'],currentLocation['objects']['calculated_lon'],60)
+            if currentLocation:
+                #lets see if the result timestamp is newer than the last 15 seconds as it should be updated every 33ms
+                while  ((parse_datetime(currentLocation['timestamp']) > (datetime.now() - timedelta(seconds=15))) and (not currentLocation['objects']['calculated_lat'] is None and not currentLocation['objects']['calculated_lon'] is None)) :
+                    print('There are NEW coordinates Lat:',currentLocation['currentLocation']['calculated_lat'],'Lon:',currentLocation['objects']['calculated_lon'])  
+                    #insert drone code here about going to the target
+                    #goTo(currentLocation['objects']['calculated_lat'],currentLocation['objects']['calculated_lon'],60)
+                    
+                    sleep(1) #lets sleep for testing
+                    #requery db
+                    currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
                 
-                sleep(1) #lets sleep for testing
-                #requery db
-                currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
-            
-            #while condition is no longer valid put drone in position hold and rely on failsafes for RTL and end script
+            #if or while condition is no longer valid put drone in position hold and rely on failsafes for RTL and end script
             print("Drone will hold position as the vehicle is lost")
 
 def getInitialLatLon(client,targetId):
