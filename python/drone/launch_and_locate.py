@@ -69,12 +69,15 @@ def getCurrentLatLon(client,recordingId,targetId):
     }.items())
     limit=1
 
-    return client['opendatacam']['tracker'].find(
-    filter=filter,
-    projection=project,
-    sort=sort,
-    limit=limit
-    )
+    results = client['opendatacam']['tracker'].find(
+        filter=filter,
+        projection=project,
+        sort=sort,
+        limit=limit
+        )
+
+    return list(results)
+
 
 def main():
     #process command line arguments
