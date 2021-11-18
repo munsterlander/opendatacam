@@ -16,6 +16,7 @@ def launch_drone(targetId):
             #goTo(initialLocation['coordinates']['lat],initialLocation['coordinates']['lon'],60)
 
             currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
+
             print('There are NEW coordinates Lat: %s Lon: %s' % (currentLocation['objects'][0]['calculated_lat'],currentLocation['objects'][0]['calculated_lon']))  
             if currentLocation:
                 #lets see if the result timestamp is newer than the last 15 seconds as it should be updated every 33ms
@@ -69,14 +70,12 @@ def getCurrentLatLon(client,recordingId,targetId):
     }.items())
     limit=1
 
-    results = client['opendatacam']['tracker'].find(
-        filter=filter,
-        projection=project,
-        sort=sort,
-        limit=limit
-        )
-
-    return list(results)
+    return client['opendatacam']['tracker'].find_one(
+    filter=filter,
+    projection=project,
+    sort=sort,
+    limit=limit
+    )
 
 
 def main():
