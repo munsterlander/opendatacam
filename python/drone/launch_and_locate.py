@@ -20,7 +20,7 @@ def launch_drone(targetId):
             if currentLocation:
                 #lets see if the result timestamp is newer than the last 15 seconds as it should be updated every 33ms
                 while  ((currentLocation['timestamp'] > (datetime.now() - timedelta(seconds=15))) and (not currentLocation['objects'][0]['calculated_lat'] is None and not currentLocation['objects'][0]['calculated_lon'] is None)) :
-                    print('There are NEW coordinates Lat: %s Lon: %s' % (currentLocation['objects'][0]['calculated_lat'],currentLocation['objects'][0]['calculated_lon']))
+                    print('There are NEW coordinates Lat: %s Lon: %s and Timestamp is %s with timeDelta %s' % (currentLocation['objects'][0]['calculated_lat'],currentLocation['objects'][0]['calculated_lon'],currentLocation['timestamp'],(datetime.now() - timedelta(seconds=15))))
                     #insert drone code here about going to the target
                     #goTo(currentLocation['objects']['calculated_lat'],currentLocation['objects']['calculated_lon'],60)
                     
