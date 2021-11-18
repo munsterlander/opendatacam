@@ -16,7 +16,7 @@ def launch_drone(targetId):
             #goTo(initialLocation['coordinates']['lat],initialLocation['coordinates']['lon'],60)
 
             currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
-            print('There are NEW coordinates Lat: %s Lon: %s' % (currentLocation['currentLocation']['calculated_lat'],currentLocation['objects']['calculated_lon']))  
+            print('There are NEW coordinates Lat: %s Lon: %s' % (currentLocation['objects'][0]['calculated_lat'],currentLocation['objects'][0]['calculated_lon']))  
             if currentLocation:
                 #lets see if the result timestamp is newer than the last 15 seconds as it should be updated every 33ms
                 while  ((parse_datetime(currentLocation['timestamp']) > (datetime.now() - timedelta(seconds=15))) and (not currentLocation['objects']['calculated_lat'] is None and not currentLocation['objects']['calculated_lon'] is None)) :
