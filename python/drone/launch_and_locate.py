@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 from datetime import datetime, timedelta
-from ciso8601 import parse_datetime
 from time import sleep
 
 def launch_drone(targetId):
@@ -18,10 +17,9 @@ def launch_drone(targetId):
             currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
 
             print('There are NEW coordinates Lat: %s Lon: %s' % (currentLocation['objects'][0]['calculated_lat'],currentLocation['objects'][0]['calculated_lon']))  
-            print(parse_datetime(currentLocation['timestamp']))
             if currentLocation:
                 #lets see if the result timestamp is newer than the last 15 seconds as it should be updated every 33ms
-                while  ((parse_datetime(currentLocation['timestamp']) > (datetime.now() - timedelta(seconds=15))) and (not currentLocation['objects'][0]['calculated_lat'] is None and not currentLocation['objects'][0]['calculated_lon'] is None)) :
+                while  ((currentLocation['timestamp'] > (datetime.now() - timedelta(seconds=15))) and (not currentLocation['objects'][0]['calculated_lat'] is None and not currentLocation['objects'][0]['calculated_lon'] is None)) :
                     print('There are NEW coordinates Lat: %s Lon: %s' % (currentLocation['currentLocation'][0]['calculated_lat'],currentLocation['objects'][0]['calculated_lon']))
                     #insert drone code here about going to the target
                     #goTo(currentLocation['objects']['calculated_lat'],currentLocation['objects']['calculated_lon'],60)
