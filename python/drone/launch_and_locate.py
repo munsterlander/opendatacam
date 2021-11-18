@@ -12,7 +12,7 @@ def launch_drone(targetId):
             print('There are coordinates Lat: %s Lon: %s' % (initialLocation['coordinates']['lat'],initialLocation['coordinates']['lon']))  
             
             #Send drone to initial location
-            #insert drone code here about launching and going to the target
+            #insert drone code here aboutlaunc launching and going to the target
             #goTo(initialLocation['coordinates']['lat],initialLocation['coordinates']['lon'],60)
 
             currentLocation = getCurrentLatLon(client,initialLocation['recordingId'],targetId)
@@ -69,7 +69,7 @@ def getCurrentLatLon(client,recordingId,targetId):
     }.items())
     limit=1
 
-    return client['opendatacam']['tracker'].find_one(
+    return client['opendatacam']['tracker'].find(
     filter=filter,
     projection=project,
     sort=sort,
