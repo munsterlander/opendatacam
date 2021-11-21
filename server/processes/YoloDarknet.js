@@ -77,7 +77,7 @@ class YoloDarknet extends EventEmitter {
 
     this.process.on('error', (err) => {
       console.log('Process YOLO error');
-      console.log(err);
+      console.log('NO: '+err);
     });
 
     this.process.on('exit', (err) => {
